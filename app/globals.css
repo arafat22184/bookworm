@@ -214,3 +214,12 @@
 .hover\:pause:hover {
   animation-play-state: paused;
 }
+
+/* Force Cloudinary Widget to be on top and interactive */
+iframe[src*="cloudinary"],
+.cloudinary-overlay,
+.cloudinary-iframe,
+iframe[data-test="cloudinary-widget"] {
+  z-index: 2147483647 !important;
+  pointer-events: auto !important;
+}

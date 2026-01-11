@@ -18,8 +18,23 @@ export function ImageUpload({
   value
 }: ImageUploadProps) {
   const onUpload = (result: any) => {
-    onChange(result.info.secure_url);
+    if (result.info && typeof result.info === 'object' && 'secure_url' in result.info) {
+      onChange(result.info.secure_url);
+    }
   };
+
+  const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+
+  if (!uploadPreset) {
+    return (
+      <div className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-destructive/50 rounded-md bg-destructive/5 text-destructive gap-2 text-center">
+        <div className="font-bold">Missing Configuration</div>
+        <div className="text-sm text-muted-foreground">
+          Please add <code className="bg-muted px-1 py-0.5 rounded">NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET</code> to your .env.local file.
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -37,15 +52,7 @@ export function ImageUpload({
         ))}
       </div>
       <CldUploadWidget 
-        uploadPreset="bookworm_preset" // User needs to configure this preset effectively or "unsigned" if allowed
-        // Usually presets are needed. For now assume "ml_default" or similar standard
-        // But prompt says "User provide...". I'll use a generic preset or assume environment variable/config.
-        // Actually, we can pass options.
-        // But for strictly "next-cloudinary" valid usage, we need a preset.
-        // We can try to use signed uploads but that requires backend sig.
-        // Simplest is Unsigned.
-        // I'll assume the user has an unsigned preset or they created one.
-        // I'll call it `bookworm_uploads` and document it.
+        uploadPreset={uploadPreset} 
         onSuccess={onUpload}
       >
         {({ open }) => {
