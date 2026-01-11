@@ -32,17 +32,9 @@ export function HeroSection() {
 
   return (
     <section ref={targetRef} className="relative min-h-[95vh] flex items-center justify-center overflow-hidden">
-       {/* Abstract Background Shapes - Animated */}
-       <motion.div 
-         animate={{ rotate: 360, scale: [1, 1.2, 1] }}
-         transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-         className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-primary/10 rounded-full blur-[100px] -z-10" 
-       />
-       <motion.div 
-         animate={{ x: [-50, 50, -50], y: [-50, 50, -50] }}
-         transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-         className="absolute bottom-0 left-[-10%] w-[500px] h-[500px] bg-secondary/15 rounded-full blur-[100px] -z-10" 
-       />
+       {/* Abstract Background Shapes - Optimized for Performance */}
+       <div className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-primary/10 rounded-full blur-[100px] -z-10 animate-pulse" />
+       <div className="absolute bottom-0 left-[-10%] w-[500px] h-[500px] bg-secondary/15 rounded-full blur-[100px] -z-10 animate-pulse" style={{ animationDelay: '1s' }} />
 
        <div className="absolute inset-0 z-0">
          <motion.img 
