@@ -3,6 +3,7 @@ import connectToDatabase from '@/lib/db';
 import Book from '@/lib/models/Book';
 import User from '@/lib/models/User';
 import Review from '@/lib/models/Review';
+import Genre from '@/lib/models/Genre';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BookOpen, Users, MessageSquare } from 'lucide-react';
@@ -11,14 +12,21 @@ import { AdminCharts } from '@/components/admin/AdminCharts';
 export default async function AdminDashboardPage() {
   await connectToDatabase();
   
+  // Ensure Genre model is registered before populating
+  void Genre;
+  
   const booksCount = await Book.countDocuments();
   const usersCount = await User.countDocuments();
   /* eslint-disable @typescript-eslint/no-explicit-any */
-  const books = await Book.find().populate('genre').lean();
+  const books = await Book.find().populate('genres').lean();
   const genreStats: Record<string, number> = {};
   books.forEach((book: any) => {
-    if (book.genre?.name) {
-      genreStats[book.genre.name] = (genreStats[book.genre.name] || 0) + 1;
+    if (book.genres && Array.isArray(book.genres)) {
+      book.genres.forEach((genre: any) => {
+        if (genre?.name) {
+          genreStats[genre.name] = (genreStats[genre.name] || 0) + 1;
+        }
+      });
     }
   });
   const genreData = Object.entries(genreStats).map(([name, value]) => ({ name, value }));
