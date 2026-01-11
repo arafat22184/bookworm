@@ -12,7 +12,7 @@ export default function AuthLayout({
             <p className="text-xl text-zinc-300 max-w-md">"A room without books is like a body without a soul."</p>
             <p className="mt-2 text-zinc-400 text-sm">— Marcus Tullius Cicero</p>
          </div>
-         <div className="absolute inset-0 bg-gradient-to-tr from-black/60 to-zinc-900/20" />
+         <div className="absolute inset-0 bg-linear-to-tr from-black/60 to-zinc-900/20" />
       </div>
       <div className="flex items-center justify-center py-12 px-6 lg:px-12 bg-background">
         {children}

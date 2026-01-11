@@ -21,7 +21,7 @@ export async function middleware(req: NextRequest) {
         if (payload.role === 'admin') {
           return NextResponse.redirect(new URL('/admin/dashboard', req.url));
         } else {
-          return NextResponse.redirect(new URL('/my-library', req.url));
+          return NextResponse.redirect(new URL('/dashboard', req.url));
         }
       } catch (e) {
         // Token invalid, let them stay on login page
