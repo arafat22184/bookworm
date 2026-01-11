@@ -47,12 +47,12 @@ async function getTestimonials() {
 
     if (!reviews) return [];
 
-    return reviews.map((review: any) => ({
+    return reviews.map((review) => ({
       quote: review.comment,
-      author: review.user?.name || "Anonymous Reader",
+      author: (review.user as any)?.name || "Anonymous Reader",
       role: "Verified Reader",
-      imageId: review.user?._id?.toString() || Math.random().toString(),
-      userImage: review.user?.image
+      imageId: (review.user as any)?._id?.toString() || Math.random().toString(),
+      userImage: (review.user as any)?.image
     }));
   } catch (error) {
     console.error("Failed to fetch testimonials:", error);

@@ -7,7 +7,7 @@ import { FadeIn, StaggerContainer, StaggerItem, TextReveal, ScaleOnHover } from 
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 
-function FloatingCard({ children, className }: { children: React.ReactNode, className: String }) {
+function FloatingCard({ children, className }: { children: React.ReactNode, className: string }) {
     return (
         <motion.div 
             animate={{ y: [0, -10, 0] }}

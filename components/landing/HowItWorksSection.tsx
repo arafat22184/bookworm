@@ -23,10 +23,11 @@ export function HowItWorksSection() {
                 <div className="sticky top-32">
                     <h2 className="text-4xl md:text-6xl font-serif font-bold leading-tight mb-8">
                     Your journey from <br/>
-                    <span className="text-muted-foreground opacity-50">"What next?"</span> to <br/>
-                    <span className="text-primary decoration-wavy underline decoration-secondary">"I loved it!"</span>
+                    <span className="text-muted-foreground opacity-50">&quot;What next?&quot;</span> to <br/>
+                    <span className="text-primary decoration-wavy underline decoration-secondary">&quot;I loved it!&quot;</span>
                     </h2>
-                    <div className="aspect-square rounded-3xl bg-muted relative overflow-hidden shadow-2xl skew-y-2 hover:skew-y-0 transition-transform duration-700">
+                     <div className="aspect-square rounded-3xl bg-muted relative overflow-hidden shadow-2xl skew-y-2 hover:skew-y-0 transition-transform duration-700">
+                         {/* eslint-disable-next-line @next/next/no-img-element */}
                          <img src="/empty-state.png" alt="App Preview" className="w-full h-full object-cover rounded-xl scale-110 hover:scale-100 transition-transform duration-700" />
                     </div>
                 </div>
