@@ -1,4 +1,3 @@
-
 import connectToDatabase from '@/lib/db';
 import Book from '@/lib/models/Book';
 import User from '@/lib/models/User';

@@ -8,7 +8,7 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // Define paths that do not require authentication
-  const publicPaths = ['/login', '/register', '/api/auth/login', '/api/auth/register', '/api/auth/refresh', '/api/auth/logout'];
+  const publicPaths = ['/login', '/register', '/api/auth/login', '/api/auth/register', '/api/auth/refresh', '/api/auth/logout', '/api/auth/check'];
 
   // Public assets should also be excluded via matcher, but double checking here just in case
   if (pathname === '/' || publicPaths.some(path => pathname.startsWith(path))) {
