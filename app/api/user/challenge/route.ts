@@ -18,6 +18,8 @@ export async function POST(req: NextRequest) {
       { new: true }
     );
 
+    if (!user) return errorResponse('User not found', 404);
+
     return successResponse({ challenge: user.challenge });
   } catch (error) {
     return handleApiError(error);
