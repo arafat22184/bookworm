@@ -25,12 +25,13 @@ export function BookCard({ book, progress, status, totalPages = 300 }: BookCardP
   return (
     <Link href={`/book/${book._id}`}>
       <Card className="h-full overflow-hidden hover:shadow-lg transition-shadow border-zinc-200 dark:border-zinc-800">
-        <div className="aspect-2/3 relative bg-muted">
+        <div className="aspect-[2/3] relative overflow-hidden">
            {/* Replace with Next.js Image if domain configured, else img */}
+           {/* eslint-disable-next-line @next/next/no-img-element */}
            <img 
              src={book.coverImage} 
              alt={book.title} 
-             className="w-full h-full object-cover"
+             className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
            />
            {status && (
              <Badge className="absolute top-2 right-2 capitalize" variant="secondary">

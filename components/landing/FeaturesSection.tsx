@@ -18,8 +18,9 @@ export function FeaturesSection() {
         <div className="w-11/12 max-w-7xl mx-auto space-y-16">
            <div className="text-center space-y-4 max-w-3xl mx-auto">
               <div className="inline-block rounded-full bg-primary/10 px-3 py-1 text-sm font-bold text-primary uppercase tracking-wider">Features</div>
-              <h2 className="text-4xl md:text-5xl font-serif font-bold text-foreground">Everything you need to <span className="text-secondary italic decoration-wavy underline">read more</span></h2>
-              <p className="text-xl text-muted-foreground">Comprehensive tools designed to help you build a reading habit that sticks.</p>
+                <p className="text-xl md:text-2xl font-serif text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                    Everything you need to take your reading life to the next level. No clutter, just books.
+                </p>
            </div>
 
            {/* Bento Grid Layout */}

@@ -10,7 +10,8 @@ interface NavbarProps {
   user: any;
 }
 
-export function Navbar({ user }: NavbarProps) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function Navbar({ user }: { user: any }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
