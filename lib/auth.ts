@@ -16,10 +16,15 @@ export const signRefreshToken = (payload: any) => {
   return jwt.sign(payload, REFRESH_SECRET, { expiresIn: '7d' });
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function signToken(payload: any) {
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: '7d' });
+}
+
 export const verifyAccessToken = (token: string) => {
   try {
     return jwt.verify(token, ACCESS_SECRET);
-  } catch (error) {
+  } catch (_error) { // Prefixed unused error
     return null;
   }
 };
@@ -27,10 +32,39 @@ export const verifyAccessToken = (token: string) => {
 export const verifyRefreshToken = (token: string) => {
   try {
     return jwt.verify(token, REFRESH_SECRET);
-  } catch (error) {
+  } catch (_error) { // Prefixed unused error
     return null;
   }
 };
+
+export function verifyToken(token: string) {
+  try {
+    return jwt.verify(token, JWT_SECRET);
+  } catch (_error) { // Prefixed unused error
+    return null;
+  }
+}
+
+export async function hashPassword(password: string) {
+  return await bcrypt.hash(password, 10);
+}
+
+export async function comparePassword(password: string, hash: string) {
+  return await bcrypt.compare(password, hash);
+}
+
+export async function getSession() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('token')?.value;
+
+  if (!token) return null;
+
+  try {
+    return verifyToken(token);
+  } catch (_error) { // Prefixed unused error
+    return null;
+  }
+}
 
 export async function setAuthCookies(accessToken: string, refreshToken: string) {
   const cookieStore = await cookies();

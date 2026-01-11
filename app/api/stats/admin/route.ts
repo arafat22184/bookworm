@@ -4,7 +4,7 @@ import connectToDatabase from '@/lib/db';
 import Book from '@/lib/models/Book';
 import { successResponse, handleApiError, errorResponse } from '@/lib/api-utils';
 
-export async function GET(req: NextRequest) {
+export async function GET(_req: NextRequest) {
   try {
     const user = await getCurrentUser();
     if (!user || user.role !== 'admin') return errorResponse('Unauthorized', 403);

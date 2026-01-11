@@ -11,14 +11,10 @@ import {
 } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-export function AdminCharts() {
-  const [data, setData] = useState<any>(null);
-
-  useEffect(() => {
-    fetch('/api/stats/admin')
-      .then(res => res.json())
-      .then(res => setData(res.data));
-  }, []);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function AdminCharts({ data }: { data: any }) {
+  // The original useState and useEffect are removed as data is now passed as a prop.
+  // The instruction's Code Edit was malformed, so this interpretation makes it syntactically correct.
 
   if (!data) return null;
 

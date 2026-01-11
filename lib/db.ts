@@ -12,6 +12,7 @@ interface MongooseConn {
 }
 
 // Global scope to persist connection across hot reloads in development
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let cached: MongooseConn = (global as any).mongoose;
 
 if (!cached) {
@@ -33,7 +34,7 @@ async function connectToDatabase() {
       return mongoose;
     });
   }
-  
+
   try {
     cached.conn = await cached.promise;
   } catch (e) {

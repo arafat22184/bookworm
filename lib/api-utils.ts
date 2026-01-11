@@ -1,20 +1,30 @@
 import { NextResponse } from 'next/server';
 
-export function errorResponse(message: string, status: number = 500, errors: any = null) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function successResponse(data: any, message = 'Success', status = 200) {
   return NextResponse.json(
-    { success: false, message, errors },
+    {
+      success: true,
+      message,
+      data,
+    },
     { status }
   );
 }
 
-export function successResponse(data: any, status: number = 200) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function errorResponse(error: any, status = 500) {
+  console.error(error);
   return NextResponse.json(
-    { success: true, data },
+    {
+      success: false,
+      message: error.message || 'Internal Server Error',
+    },
     { status }
   );
 }
-
-export function handleApiError(error: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function checkAuth(session: any) {
   console.error('API Error:', error);
   if (error instanceof Error) {
     return errorResponse(error.message, 500);

@@ -1,3 +1,4 @@
+```typescript
 import { cookies } from 'next/headers';
 import { verifyAccessToken } from '@/lib/auth';
 import User from '@/lib/models/User';
@@ -10,6 +11,7 @@ export async function getCurrentUser() {
   if (!token) return null;
 
   try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const payload: any = verifyAccessToken(token);
     if (!payload) return null;
 
@@ -27,7 +29,7 @@ export async function getCurrentUser() {
       role: user.role,
       image: user.image,
     };
-  } catch (error) {
+  } catch (_error) {
     return null;
   }
 }

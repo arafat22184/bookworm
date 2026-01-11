@@ -18,6 +18,7 @@ export async function GET(req: NextRequest) {
     const limit = Number(searchParams.get('limit')) || 20;
     const skip = (page - 1) * limit;
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const filter: any = {};
     if (query) {
       filter.$or = [
