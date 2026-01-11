@@ -11,13 +11,16 @@ function useDebounce(callback: (...args: any[]) => void, delay: number) {
     let timeout: NodeJS.Timeout;
     return (...args: any[]) => {
       clearTimeout(timeout);
-      timeout = setTimeout(() => func(...args), wait);
-    };
+function debounce<T extends (...args: any[]) => void>(func: T, wait: number) {
+  let timeout: NodeJS.Timeout;
+  return (...args: Parameters<T>) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), wait);
   };
-  return debounce(callback, delay);
 }
 
-export function SearchInput() {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function SearchInput({ onSearch, placeholder = 'Search...', initialValue = '' }: any) {
   const router = useRouter();
   const searchParams = useSearchParams();
 

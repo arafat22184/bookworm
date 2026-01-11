@@ -10,21 +10,51 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  Legend,
   ResponsiveContainer
 } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
 
-export function UserCharts() {
-  const [data, setData] = useState<any>(null);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function UserCharts({ data }: { data: any }) {
+  // Process data for charts
+  const monthlyData = useMemo(() => {
+    if (!data?.reviews) return [];
+    
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const currentYear = new Date().getFullYear();
+    
+    // Initialize with 0
+    const stats = months.map(m => ({ name: m, count: 0 }));
+    
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data.reviews.forEach((review: any) => {
+      const date = new Date(review.createdAt);
+      if (date.getFullYear() === currentYear) {
+        stats[date.getMonth()].count++;
+      }
+    });
 
-  useEffect(() => {
-    fetch('/api/stats/user')
-      .then(res => res.json())
-      .then(res => setData(res.data));
-  }, []);
+    return stats;
+  }, [data]);
+
+  const genreData = useMemo(() => {
+    if (!data?.reviews) return [];
+    const stats: Record<string, number> = {};
+    
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data.reviews.forEach((review: any) => {
+      if (review.book?.genres) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        review.book.genres.forEach((g: any) => {
+          stats[g.name] = (stats[g.name] || 0) + 1;
+        });
+      }
+    });
+
+    return Object.entries(stats).map(([name, value]) => ({ name, value }));
+  }, [data]);
 
   if (!data) return null;
 
@@ -39,7 +69,7 @@ export function UserCharts() {
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
-                  data={data.genreData}
+                  data={genreData}
                   cx="50%"
                   cy="50%"
                   outerRadius={100}
