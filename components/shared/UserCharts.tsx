@@ -12,6 +12,7 @@ import {
   Tooltip,
   ResponsiveContainer
 } from 'recharts';
+import { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];

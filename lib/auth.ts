@@ -1,8 +1,10 @@
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
+import bcrypt from 'bcryptjs';
 
 const ACCESS_SECRET = process.env.JWT_ACCESS_SECRET;
 const REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET || ACCESS_SECRET || 'fallback-secret';
 
 if (!ACCESS_SECRET || !REFRESH_SECRET) {
   throw new Error('JWT secrets must be defined in .env.local');

@@ -1,4 +1,4 @@
-```typescript
+
 import { cookies } from 'next/headers';
 import { verifyAccessToken } from '@/lib/auth';
 import User from '@/lib/models/User';

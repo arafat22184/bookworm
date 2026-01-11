@@ -5,16 +5,10 @@ import { Search } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 // Implementing simple manual debounce to avoid extra dep for now
-function useDebounce(callback: (...args: any[]) => void, delay: number) {
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debounce = (func: Function, wait: number) => {
-    let timeout: NodeJS.Timeout;
-    return (...args: any[]) => {
-      clearTimeout(timeout);
 function debounce<T extends (...args: any[]) => void>(func: T, wait: number) {
-  let timeout: NodeJS.Timeout;
+  let timeout: NodeJS.Timeout | undefined;
   return (...args: Parameters<T>) => {
-    clearTimeout(timeout);
+    if (timeout) clearTimeout(timeout);
     timeout = setTimeout(() => func(...args), wait);
   };
 }
