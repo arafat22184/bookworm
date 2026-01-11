@@ -82,7 +82,7 @@ export function AddBookDialog() {
       form.reset();
       router.refresh();
     } catch (_error) {
-      toast.error('Something went wrong');
+      toast.error('Failed to load genres');
     } finally {
       setLoading(false);
     }

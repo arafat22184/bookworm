@@ -28,7 +28,7 @@ export function ReadingChallenge({ challenge }: { challenge: { goal: number, cur
             router.refresh();
         }
     } catch (_e) {
-        toast.error("Failed");
+        toast.error("Failed to update progress");
     }
   };
 

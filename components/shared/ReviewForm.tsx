@@ -12,7 +12,8 @@ export function ReviewForm({ bookId }: { bookId: string }) {
     const [comment, setComment] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const handleSubmit = async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handleSubmit = async (data: any) => {
         if (rating === 0) return toast.error("Please select a rating");
         if (!comment.trim()) return toast.error("Please write a comment");
         

@@ -15,7 +15,7 @@ export async function POST(_req: NextRequest) {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const decoded: any = verifyRefreshToken(refreshToken);
+    const decoded: any = verifyRefreshToken(token);
 
     if (!decoded) {
       return errorResponse('Invalid or expired refresh token', 401);

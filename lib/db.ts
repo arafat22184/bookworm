@@ -29,8 +29,8 @@ async function connectToDatabase() {
       bufferCommands: false,
     };
 
-    cached.promise = mongoose.connect(MONGODB_URI!, opts).then((mongoose) => {
-      console.log('✅ Connected to MongoDB');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    cached.promise = mongoose.connect(MONGODB_URI!, opts).then((mongoose: any) => {
       return mongoose;
     });
   }

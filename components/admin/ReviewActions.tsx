@@ -19,7 +19,7 @@ export function ReviewActions({ reviewId }: { reviewId: string }) {
             toast.success(`Review ${status}`);
             router.refresh();
         } catch (_e) {
-            toast.error('Something went wrong');
+            toast.error('Failed to update review status');
         }
     };
 

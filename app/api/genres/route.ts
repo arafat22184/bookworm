@@ -16,6 +16,7 @@ export async function GET(_req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
+    const limit = Number(req.nextUrl.searchParams.get('limit')) || 10;
     const user = await getCurrentUser();
     if (!user || user.role !== 'admin') {
       return errorResponse('Unauthorized', 403);
@@ -26,7 +27,7 @@ export async function POST(req: NextRequest) {
 
     const genre = await Genre.create(body);
 
-    return successResponse({ genre }, 201);
+    return successResponse({ genre }, 'Genre created successfully', 201);
   } catch (error) {
     return handleApiError(error);
   }

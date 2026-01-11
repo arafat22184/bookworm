@@ -63,7 +63,7 @@ export function AddGenreDialog() {
       // Ideally we trigger SWR revalid or just simple window reload or router refresh logic which might not re-fetch existing component useEffect.
       // But for admin usage, it's fine.
     } catch (_error) {
-      toast.error('Failed to create genre');
+      toast.error('Failed to add genre');
     } finally {
       setLoading(false);
     }

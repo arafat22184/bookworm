@@ -23,7 +23,7 @@ export async function middleware(req: NextRequest) {
         } else {
           return NextResponse.redirect(new URL('/dashboard', req.url));
         }
-      } catch (e) {
+      } catch (_e) {
         // Token invalid, let them stay on login page
       }
     }

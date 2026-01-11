@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
 
     const book = await Book.create(body);
 
-    return successResponse({ book }, 201);
+    return successResponse({ book }, 'Book created successfully', 201);
   } catch (error) {
     return handleApiError(error);
   }

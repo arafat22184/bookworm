@@ -24,7 +24,9 @@ export function RoleSelect({ userId, currentRole }: { userId: string, currentRol
         toast.success("Role updated");
         router.refresh();
     } catch (_e) {
-        toast.error("Failed to update role");
+      const originalValue = role; // Revert
+      // ... handle revert if needed
+      toast.error('Failed to update role');
     } finally { };
   };
 
