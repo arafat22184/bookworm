@@ -5,17 +5,17 @@ import { Search } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback } from 'react';
 
-// Implementing simple manual debounce to avoid extra dep for now
-function debounce<T extends (...args: any[]) => void>(func: T, wait: number) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function debounce(func: any, wait: number) {
   let timeout: NodeJS.Timeout | undefined;
-  return (...args: Parameters<T>) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (...args: any[]) => {
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(() => func(...args), wait);
   };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function SearchInput({ onSearch, placeholder = 'Search...', initialValue = '' }: any) {
+export function SearchInput() {
   const router = useRouter();
   const searchParams = useSearchParams();
 

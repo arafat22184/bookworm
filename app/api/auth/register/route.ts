@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     const result = registerSchema.safeParse(body);
 
     if (!result.success) {
-      return errorResponse('Validation Error', 400, result.error.flatten().fieldErrors);
+      return errorResponse('Validation Error', 400);
     }
 
     const { name, email, password } = result.data;
@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
         role: user.role,
         image: user.image,
       },
-    }, 201);
+    }, 'User registered successfully', 201);
   } catch (error) {
     return handleApiError(error);
   }

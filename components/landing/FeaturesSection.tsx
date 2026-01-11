@@ -116,7 +116,7 @@ export function FeaturesSection() {
                            {/* The instruction is to make the change and return the full contents. */}
                            {/* I will insert the line: `{i === 2 && <p className="text-xs text-muted-foreground mt-2 italic">And yes, we&apos;re working on the "make coffee" feature. ☕</p>}` */}
                            {/* after the existing `<p>` tag in the "Small Card 2" section. */}
-                           <p className="text-xs text-muted-foreground mt-2 italic">And yes, we&apos;re working on the "make coffee" feature. ☕</p>
+                           <p className="text-xs text-muted-foreground mt-2 italic">And yes, we&apos;re working on the &quot;make coffee&quot; feature. ☕</p>
                        </div>
                   </div>
               </BentoCard>

@@ -7,7 +7,6 @@ import { Sidebar } from './Sidebar';
 import { useState } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function Navbar({ user }: { user: any }) {
   const [isOpen, setIsOpen] = useState(false);
 

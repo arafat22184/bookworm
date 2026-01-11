@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation';
 import { getCurrentUser } from '@/lib/session';
 import { Sidebar } from '@/components/shared/Sidebar';
 import { Navbar } from '@/components/shared/Navbar';
-import { clearAuthCookies } from '@/lib/auth';
+
 
 export default async function DashboardLayout({
   children,
@@ -13,14 +13,6 @@ export default async function DashboardLayout({
 
   if (!user) {
     redirect('/login');
-  }
-
-  // Logout action for Client Component to call (via API or Server Action)
-  // For now, simple API call from client.
-  async function handleLogout() {
-    'use server';
-    // Actually we can't pass server action easily to client component prop if not defined properly.
-    // We will let Sidebar use fetch('/api/auth/logout').
   }
 
   return (

@@ -1,10 +1,9 @@
-import { NextRequest } from 'next/server';
 import { getCurrentUser } from '@/lib/session';
 import connectToDatabase from '@/lib/db';
 import Book from '@/lib/models/Book';
 import { successResponse, handleApiError, errorResponse } from '@/lib/api-utils';
 
-export async function GET(_req: NextRequest) {
+export async function GET() {
   try {
     const user = await getCurrentUser();
     if (!user || user.role !== 'admin') return errorResponse('Unauthorized', 403);

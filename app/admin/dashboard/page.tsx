@@ -1,8 +1,9 @@
-import { getCurrentUser } from '@/lib/session';
+
 import connectToDatabase from '@/lib/db';
 import Book from '@/lib/models/Book';
 import User from '@/lib/models/User';
 import Review from '@/lib/models/Review';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BookOpen, Users, MessageSquare } from 'lucide-react';
 import { AdminCharts } from '@/components/admin/AdminCharts';
@@ -12,7 +13,19 @@ export default async function AdminDashboardPage() {
   
   const booksCount = await Book.countDocuments();
   const usersCount = await User.countDocuments();
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const books = await Book.find().populate('genre').lean();
+  const genreStats: Record<string, number> = {};
+  books.forEach((book: any) => {
+    if (book.genre?.name) {
+      genreStats[book.genre.name] = (genreStats[book.genre.name] || 0) + 1;
+    }
+  });
+  const genreData = Object.entries(genreStats).map(([name, value]) => ({ name, value }));
+  /* eslint-enable @typescript-eslint/no-explicit-any */
+
   const pendingReviews = await Review.countDocuments({ status: 'pending' });
+
 
   return (
     <div className="space-y-6">
@@ -51,7 +64,7 @@ export default async function AdminDashboardPage() {
         </Card>
       </div>
 
-      <AdminCharts />
+      <AdminCharts data={{ genreData }} />
       
     </div>
   );

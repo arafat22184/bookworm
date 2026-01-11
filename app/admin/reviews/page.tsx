@@ -1,4 +1,4 @@
-import { getCurrentUser } from '@/lib/session';
+
 import connectToDatabase from '@/lib/db';
 import Review from '@/lib/models/Review';
 import {
@@ -9,10 +9,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { Check, X } from 'lucide-react';
 import { ReviewActions } from '@/components/admin/ReviewActions';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const serialize = (obj: any) => JSON.parse(JSON.stringify(obj));
 
 export default async function AdminReviewsPage() {
@@ -39,6 +38,7 @@ export default async function AdminReviewsPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             {reviews.map((review: any) => (
               <TableRow key={review._id}>
                 <TableCell className="font-medium">{review.book.title}</TableCell>

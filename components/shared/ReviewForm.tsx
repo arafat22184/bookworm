@@ -12,8 +12,7 @@ export function ReviewForm({ bookId }: { bookId: string }) {
     const [comment, setComment] = useState('');
     const [loading, setLoading] = useState(false);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const handleSubmit = async (data: any) => {
+    const handleSubmit = async () => {
         if (rating === 0) return toast.error("Please select a rating");
         if (!comment.trim()) return toast.error("Please write a comment");
         
@@ -30,8 +29,9 @@ export function ReviewForm({ bookId }: { bookId: string }) {
             setRating(0);
             setComment('');
             router.refresh();
-        } catch (e: any) {
-            toast.error(e.message || "Failed to submit review");
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+            toast.error(error.message || "Failed to submit review");
         } finally {
             setLoading(false);
         }

@@ -9,7 +9,7 @@ export default function AuthLayout({
          {/* Decorative background or pattern could go here */}
          <div className="relative z-10 flex flex-col items-center text-center">
             <h1 className="text-5xl font-serif font-bold mb-6 italic tracking-tight">BookWorm</h1>
-            <p className="text-xl text-zinc-300 max-w-md">"A room without books is like a body without a soul."</p>
+                    <p className="text-muted-foreground">&ldquo;Reading is to the mind what exercise is to the body.&rdquo; - Joseph Addison</p>
             <p className="mt-2 text-zinc-400 text-sm">— Marcus Tullius Cicero</p>
          </div>
          <div className="absolute inset-0 bg-linear-to-tr from-black/60 to-zinc-900/20" />

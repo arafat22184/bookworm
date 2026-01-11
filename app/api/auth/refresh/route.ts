@@ -1,11 +1,10 @@
-import { NextRequest } from 'next/server';
 import { verifyRefreshToken, signAccessToken, signRefreshToken, setAuthCookies } from '@/lib/auth';
 import { errorResponse, successResponse, handleApiError } from '@/lib/api-utils';
 import { cookies } from 'next/headers';
 import User from '@/lib/models/User';
 import connectToDatabase from '@/lib/db';
 
-export async function POST(_req: NextRequest) {
+export async function POST() {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get('refreshToken')?.value;

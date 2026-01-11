@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     const result = loginSchema.safeParse(body);
 
     if (!result.success) {
-      return errorResponse('Validation Error', 400, result.error.flatten().fieldErrors);
+      return errorResponse('Validation Error', 400);
     }
 
     const { email, password } = result.data;

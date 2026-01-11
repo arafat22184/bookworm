@@ -25,7 +25,7 @@ export function BookCard({ book, progress, status, totalPages = 300 }: BookCardP
   return (
     <Link href={`/book/${book._id}`}>
       <Card className="h-full overflow-hidden hover:shadow-lg transition-shadow border-zinc-200 dark:border-zinc-800">
-        <div className="aspect-[2/3] relative overflow-hidden">
+        <div className="aspect-2/3 relative overflow-hidden">
            {/* Replace with Next.js Image if domain configured, else img */}
            {/* eslint-disable-next-line @next/next/no-img-element */}
            <img 

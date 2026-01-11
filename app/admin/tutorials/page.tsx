@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
@@ -10,6 +9,7 @@ import { toast } from 'sonner';
 
 export default function AdminTutorialsPage() {
   // const router = useRouter();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [tutorials, setTutorials] = useState<any[]>([]);
   const [title, setTitle] = useState('');
   const [videoUrl, setVideoUrl] = useState('');
@@ -37,7 +37,7 @@ export default function AdminTutorialsPage() {
             const newT = await res.json();
             setTutorials([newT.data.tutorial, ...tutorials]);
         }
-    } catch(e) {
+    } catch {
         toast.error("Failed");
     } finally {
         setLoading(false);

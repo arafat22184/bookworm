@@ -1,10 +1,9 @@
-import { NextRequest } from 'next/server';
 import { getCurrentUser } from '@/lib/session';
 import connectToDatabase from '@/lib/db';
 import Shelf from '@/lib/models/Shelf';
 import { successResponse, handleApiError, errorResponse } from '@/lib/api-utils';
 
-export async function GET(_req: NextRequest) {
+export async function GET() {
   try {
     const user = await getCurrentUser();
     if (!user) return errorResponse('Unauthorized', 401);
@@ -18,6 +17,7 @@ export async function GET(_req: NextRequest) {
 
     // Genre Distribution (Pie)
     const genreMap: Record<string, number> = {};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     shelves.forEach((s: any) => {
       if (s.book?.genres) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

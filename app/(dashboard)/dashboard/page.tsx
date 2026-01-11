@@ -5,12 +5,13 @@ import Book from '@/lib/models/Book';
 import Shelf from '@/lib/models/Shelf';
 import { ReadingChallenge } from '@/components/shared/ReadingChallenge';
 import { BookCard } from '@/components/shared/BookCard';
-import { UserCharts } from '@/components/shared/UserCharts';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpen, Star, TrendingUp } from 'lucide-react';
+import { BookOpen, Star } from 'lucide-react';
 import { redirect } from 'next/navigation';
 
-const serialize = (obj: any) => JSON.parse(JSON.stringify(obj));
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const serialize = (obj: any) => JSON.parse(JSON.stringify(obj));
 
 export default async function UserDashboardPage() {
   const userSession = await getCurrentUser();
@@ -57,6 +58,7 @@ export default async function UserDashboardPage() {
              <div className="text-2xl font-bold">{totalRead}</div>
              {totalRead === 0 && (
                 <div className="mt-4 flex flex-col items-center opacity-70">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src="/empty-state.png" alt="No books" className="w-24 h-24 mb-2 opacity-50 grayscale" />
                     <p className="text-xs text-muted-foreground">Start reading!</p>
                 </div>
@@ -91,6 +93,7 @@ export default async function UserDashboardPage() {
             <h2 className="text-2xl font-serif font-bold">Top Rated Books</h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             {topRated.map((book: any) => (
                 <BookCard key={book._id} book={book} />
             ))}
@@ -102,7 +105,8 @@ export default async function UserDashboardPage() {
             <h2 className="text-2xl font-serif font-bold">New Arrivals</h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-            {newest.map((book: any) => (
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+              {newest.map((book: any) => (
                 <BookCard key={book._id} book={book} />
             ))}
         </div>

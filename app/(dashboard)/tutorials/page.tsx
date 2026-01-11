@@ -1,9 +1,9 @@
-import { getCurrentUser } from '@/lib/session';
 import connectToDatabase from '@/lib/db';
 import Tutorial from '@/lib/models/Tutorial';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
-const serialize = (obj: any) => JSON.parse(JSON.stringify(obj));
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const serialize = (obj: any) => JSON.parse(JSON.stringify(obj));
 
 export default async function TutorialsPage() {
   await connectToDatabase();
@@ -18,7 +18,8 @@ export default async function TutorialsPage() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {tutorials.map((tutorial: any) => (
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+              {tutorials.map((tutorial: any) => (
           <Card key={tutorial._id} className="overflow-hidden">
             <div className="aspect-video w-full">
               <iframe 

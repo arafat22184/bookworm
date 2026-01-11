@@ -16,6 +16,7 @@ interface MongooseConn {
 let cached: MongooseConn = (global as any).mongoose;
 
 if (!cached) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   cached = (global as any).mongoose = { conn: null, promise: null };
 }
 

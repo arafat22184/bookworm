@@ -29,7 +29,7 @@ export async function getCurrentUser() {
       role: user.role,
       image: user.image,
     };
-  } catch (_error) {
+  } catch {
     return null;
   }
 }

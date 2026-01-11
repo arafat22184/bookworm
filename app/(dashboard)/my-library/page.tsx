@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookCard } from '@/components/shared/BookCard';
 
 // Helper to serialize Mongoose documents
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const serialize = (obj: any) => JSON.parse(JSON.stringify(obj));
 
 export default async function MyLibraryPage() {
@@ -16,6 +17,7 @@ export default async function MyLibraryPage() {
   await connectToDatabase();
   
   // Ensure Book model is registered
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const _ = Book;
 
   const rawShelves = await Shelf.find({ user: user.id })
@@ -26,8 +28,11 @@ export default async function MyLibraryPage() {
   // Serialize for passing to potential Client Components (or just to be safe with Date objects)
   const shelves = serialize(rawShelves);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const wantToRead = shelves.filter((s: any) => s.status === 'want-to-read');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const currentlyReading = shelves.filter((s: any) => s.status === 'currently-reading');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const read = shelves.filter((s: any) => s.status === 'read');
 
   return (
@@ -46,6 +51,7 @@ export default async function MyLibraryPage() {
         
         <TabsContent value="current" className="mt-6">
            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
              {currentlyReading.map((entry: any) => (
                <BookCard 
                   key={entry._id} 
@@ -64,6 +70,7 @@ export default async function MyLibraryPage() {
         
         <TabsContent value="want" className="mt-6">
            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
              {wantToRead.map((entry: any) => (
                <BookCard 
                   key={entry._id} 
@@ -81,6 +88,7 @@ export default async function MyLibraryPage() {
 
         <TabsContent value="read" className="mt-6">
            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
              {read.map((entry: any) => (
                <BookCard 
                   key={entry._id} 
@@ -90,7 +98,7 @@ export default async function MyLibraryPage() {
              ))}
              {read.length === 0 && (
                 <div className="col-span-full text-center py-12 text-muted-foreground border border-dashed rounded-lg">
-                    You haven't finished any books yet. Keep reading!
+                    You haven&apos;t finished any books yet. Keep reading!
                 </div>
              )}
            </div>

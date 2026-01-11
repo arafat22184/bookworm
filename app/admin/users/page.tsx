@@ -12,10 +12,12 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { RoleSelect } from '@/components/admin/RoleSelect';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const serialize = (obj: any) => JSON.parse(JSON.stringify(obj));
 
 export default async function AdminUsersPage() {
   await connectToDatabase();
+
   const rawUsers = await User.find().sort({ createdAt: -1 });
   const users = serialize(rawUsers);
 
@@ -34,6 +36,7 @@ export default async function AdminUsersPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             {users.map((user: any) => (
               <TableRow key={user._id}>
                 <TableCell className="flex items-center gap-2">

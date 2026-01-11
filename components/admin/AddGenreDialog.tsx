@@ -62,7 +62,7 @@ export function AddGenreDialog() {
       // Since AddBookDialog fetches genres on mount, getting it to refresh requires context or refresh trigger.
       // Ideally we trigger SWR revalid or just simple window reload or router refresh logic which might not re-fetch existing component useEffect.
       // But for admin usage, it's fine.
-    } catch (_error) {
+    } catch {
       toast.error('Failed to add genre');
     } finally {
       setLoading(false);

@@ -16,6 +16,7 @@ interface BookPageProps {
   params: Promise<{ id: string }>;
 }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const serialize = (obj: any) => JSON.parse(JSON.stringify(obj));
 
 export default async function BookPage({ params }: BookPageProps) {
@@ -25,6 +26,7 @@ export default async function BookPage({ params }: BookPageProps) {
   await connectToDatabase();
   
   // ensure models
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const _ = User;
 
   const { id } = await params;
@@ -32,7 +34,7 @@ export default async function BookPage({ params }: BookPageProps) {
   let book;
   try {
     book = await Book.findById(id).populate('genres').lean();
-  } catch(e) {
+  } catch {
     notFound();
   }
 
@@ -54,8 +56,9 @@ export default async function BookPage({ params }: BookPageProps) {
     <div className="max-w-4xl mx-auto space-y-8">
       <div className="flex flex-col md:flex-row gap-8">
         <div className="w-full md:w-1/3 space-y-4">
-           <div className="aspect-2/3 relative rounded-lg overflow-hidden border shadow-lg">
-             <img src={serializedBook.coverImage} alt={serializedBook.title} className="w-full h-full object-cover" />
+            <div className="relative aspect-2/3 w-full md:w-64 overflow-hidden rounded-lg shadow-lg">
+               {/* eslint-disable-next-line @next/next/no-img-element */}
+               <img src={serializedBook.coverImage} alt={serializedBook.title} className="w-full h-full object-cover" />
            </div>
            
            <AddToShelf bookId={id} currentStatus={shelfEntry?.status} />
@@ -75,8 +78,9 @@ export default async function BookPage({ params }: BookPageProps) {
            </div>
 
            <div className="flex flex-wrap gap-2">
-             {serializedBook.genres.map((g: any) => (
-               <Badge key={g._id} variant="outline">{g.name}</Badge>
+                  {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                  {serializedBook.genres.map((genre: any) => (
+               <Badge key={genre._id} variant="outline">{genre.name}</Badge>
              ))}
            </div>
 
@@ -95,7 +99,8 @@ export default async function BookPage({ params }: BookPageProps) {
         <ReviewForm bookId={id} />
         
         <div className="space-y-6">
-           {reviews.map((review: any) => (
+                  {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                  {reviews.map((review: any) => (
              <div key={review._id} className="flex gap-4">
                <Avatar>
                  <AvatarImage src={review.user.image} />

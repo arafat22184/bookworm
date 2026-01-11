@@ -4,7 +4,7 @@ import connectToDatabase from '@/lib/db';
 import Tutorial from '@/lib/models/Tutorial';
 import { successResponse, handleApiError, errorResponse } from '@/lib/api-utils';
 
-export async function GET(_req: NextRequest) {
+export async function GET() {
   try {
     await connectToDatabase();
     const tutorials = await Tutorial.find().sort({ createdAt: -1 });
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
 
     const tutorial = await Tutorial.create(body);
 
-    return successResponse({ tutorial }, 201);
+    return successResponse({ tutorial }, 'Tutorial created successfully', 201);
   } catch (error) {
     return handleApiError(error);
   }

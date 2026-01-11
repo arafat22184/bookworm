@@ -28,7 +28,7 @@ export function signToken(payload: any) {
 export const verifyAccessToken = (token: string) => {
   try {
     return jwt.verify(token, ACCESS_SECRET);
-  } catch (_error) { // Prefixed unused error
+  } catch {
     return null;
   }
 };
@@ -36,7 +36,7 @@ export const verifyAccessToken = (token: string) => {
 export const verifyRefreshToken = (token: string) => {
   try {
     return jwt.verify(token, REFRESH_SECRET);
-  } catch (_error) { // Prefixed unused error
+  } catch {
     return null;
   }
 };
@@ -44,7 +44,7 @@ export const verifyRefreshToken = (token: string) => {
 export function verifyToken(token: string) {
   try {
     return jwt.verify(token, JWT_SECRET);
-  } catch (_error) { // Prefixed unused error
+  } catch {
     return null;
   }
 }
@@ -65,7 +65,7 @@ export async function getSession() {
 
   try {
     return verifyToken(token);
-  } catch (_error) { // Prefixed unused error
+  } catch {
     return null;
   }
 }

@@ -23,7 +23,7 @@ export async function middleware(req: NextRequest) {
         } else {
           return NextResponse.redirect(new URL('/dashboard', req.url));
         }
-      } catch (_e) {
+      } catch {
         // Token invalid, let them stay on login page
       }
     }
@@ -56,7 +56,7 @@ export async function middleware(req: NextRequest) {
     response.headers.set('X-User-Role', payload.role as string);
     return response;
 
-  } catch (_error) {
+  } catch {
     // Access token expired or invalid
     // Ideally we would check for refresh token here, but verifying refresh token might require DB check which is not allowed in Edge middleware easily,
     // or requires a separate secret. Assuming strictly stateless middleware for now, redirection is safer.

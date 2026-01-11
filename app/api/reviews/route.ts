@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
       status: 'pending', // Pending approval
     });
 
-    return successResponse({ review }, 201);
+    return successResponse({ review }, 'Review submitted successfully', 201);
   } catch (error) {
     return handleApiError(error);
   }

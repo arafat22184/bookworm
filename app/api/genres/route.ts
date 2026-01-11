@@ -4,7 +4,7 @@ import connectToDatabase from '@/lib/db';
 import Genre from '@/lib/models/Genre';
 import { successResponse, handleApiError, errorResponse } from '@/lib/api-utils';
 
-export async function GET(_req: NextRequest) {
+export async function GET() {
   try {
     await connectToDatabase();
     const genres = await Genre.find().sort({ name: 1 });
@@ -16,7 +16,6 @@ export async function GET(_req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const limit = Number(req.nextUrl.searchParams.get('limit')) || 10;
     const user = await getCurrentUser();
     if (!user || user.role !== 'admin') {
       return errorResponse('Unauthorized', 403);

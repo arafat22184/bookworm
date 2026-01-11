@@ -50,9 +50,12 @@ async function getTestimonials() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return reviews.map((review: any) => ({
       quote: review.comment,
-      author: review.user?.name || "Anonymous Reader",
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      author: (review.user as any)?.name || "Anonymous Reader",
       role: "Verified Reader",
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       imageId: (review.user as any)?._id?.toString() || Math.random().toString(),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       userImage: (review.user as any)?.image
     }));
   } catch (error) {
@@ -69,7 +72,7 @@ export async function TestimonialsSection() {
        <div className="space-y-16">
           <div className="text-center space-y-4">
               <h2 className="text-4xl md:text-5xl font-serif font-bold text-foreground">Loved by <span className="text-primary">Readers</span></h2>
-              <p className="text-muted-foreground">Don't just take our word for it.</p>
+              <p className="text-muted-foreground">Don&apos;t just take our word for it.</p>
           </div>
 
           {testimonials.length === 0 ? (
