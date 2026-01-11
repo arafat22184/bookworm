@@ -5,6 +5,7 @@ import User from '@/lib/models/User';
 import Review from '@/lib/models/Review';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BookOpen, Users, MessageSquare } from 'lucide-react';
+import { AdminCharts } from '@/components/admin/AdminCharts';
 
 export default async function AdminDashboardPage() {
   await connectToDatabase();
@@ -50,7 +51,7 @@ export default async function AdminDashboardPage() {
         </Card>
       </div>
 
-      {/* TODO: Charts (Recharts) */}
+      <AdminCharts />
       
     </div>
   );

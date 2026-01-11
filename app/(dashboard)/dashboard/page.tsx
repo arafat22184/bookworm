@@ -5,6 +5,7 @@ import Book from '@/lib/models/Book';
 import Shelf from '@/lib/models/Shelf';
 import { ReadingChallenge } from '@/components/shared/ReadingChallenge';
 import { BookCard } from '@/components/shared/BookCard';
+import { UserCharts } from '@/components/shared/UserCharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BookOpen, Star, TrendingUp } from 'lucide-react';
 import { redirect } from 'next/navigation';
