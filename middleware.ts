@@ -46,7 +46,7 @@ export async function middleware(req: NextRequest) {
     // Admin Route Protection
     if (pathname.startsWith('/admin')) {
       if (payload.role !== 'admin') {
-        return NextResponse.redirect(new URL('/my-library', req.url));
+        return NextResponse.redirect(new URL('/dashboard', req.url));
       }
     }
 

@@ -39,7 +39,7 @@ export function Sidebar({ user }: SidebarProps) {
     {
       label: 'Home',
       icon: LayoutDashboard,
-      href: user.role === 'admin' ? '/admin/dashboard' : '/my-library', // Adjust default home based on role
+      href: user.role === 'admin' ? '/admin/dashboard' : '/dashboard', // Adjust default home based on role
     },
     {
       label: 'My Library',
