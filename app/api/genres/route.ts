@@ -4,7 +4,7 @@ import connectToDatabase from '@/lib/db';
 import Genre from '@/lib/models/Genre';
 import { successResponse, handleApiError, errorResponse } from '@/lib/api-utils';
 
-export async function GET(req: NextRequest) {
+export async function GET(_req: NextRequest) {
   try {
     await connectToDatabase();
     const genres = await Genre.find().sort({ name: 1 });

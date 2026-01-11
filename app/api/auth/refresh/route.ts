@@ -5,7 +5,7 @@ import { cookies } from 'next/headers';
 import User from '@/lib/models/User';
 import connectToDatabase from '@/lib/db';
 
-export async function POST(req: NextRequest) {
+export async function POST(_req: NextRequest) {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get('refreshToken')?.value;
@@ -14,7 +14,8 @@ export async function POST(req: NextRequest) {
       return errorResponse('Refresh token missing', 401);
     }
 
-    const decoded: any = verifyRefreshToken(token);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const decoded: any = verifyRefreshToken(refreshToken);
 
     if (!decoded) {
       return errorResponse('Invalid or expired refresh token', 401);

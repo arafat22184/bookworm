@@ -4,12 +4,12 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
-import { Loader2, Plus, Trash } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import { Loader2, Plus } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function AdminTutorialsPage() {
-  const router = useRouter();
+  // const router = useRouter();
   const [tutorials, setTutorials] = useState<any[]>([]);
   const [title, setTitle] = useState('');
   const [videoUrl, setVideoUrl] = useState('');
@@ -52,11 +52,11 @@ export default function AdminTutorialsPage() {
         <form onSubmit={handleSubmit} className="flex gap-4 items-end">
             <div className="space-y-2 flex-1">
                 <label className="text-sm font-medium">Title</label>
-                <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Tutorial Title" required />
+                <Input value={title} onChange={(_e) => setTitle(_e.target.value)} placeholder="Tutorial Title" required />
             </div>
             <div className="space-y-2 flex-1">
                 <label className="text-sm font-medium">YouTube URL</label>
-                <Input value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} placeholder="https://youtube.com/watch?v=..." required />
+                <Input value={videoUrl} onChange={(_e) => setVideoUrl(_e.target.value)} placeholder="https://youtube.com/watch?v=..." required />
             </div>
             <Button type="submit" disabled={loading}>
                 {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

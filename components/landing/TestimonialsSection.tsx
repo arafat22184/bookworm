@@ -47,9 +47,10 @@ async function getTestimonials() {
 
     if (!reviews) return [];
 
-    return reviews.map((review) => ({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return reviews.map((review: any) => ({
       quote: review.comment,
-      author: (review.user as any)?.name || "Anonymous Reader",
+      author: review.user?.name || "Anonymous Reader",
       role: "Verified Reader",
       imageId: (review.user as any)?._id?.toString() || Math.random().toString(),
       userImage: (review.user as any)?.image

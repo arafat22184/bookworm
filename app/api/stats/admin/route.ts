@@ -15,7 +15,9 @@ export async function GET(_req: NextRequest) {
     const books = await Book.find().populate('genres');
     const genreMap: Record<string, number> = {};
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     books.forEach((b: any) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       b.genres.forEach((g: any) => {
         genreMap[g.name] = (genreMap[g.name] || 0) + 1;
       });

@@ -9,6 +9,7 @@ export async function GET(req: NextRequest) {
   try {
     await connectToDatabase();
     // Ensure Genre model registration
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const _ = Genre;
 
     const { searchParams } = new URL(req.url);

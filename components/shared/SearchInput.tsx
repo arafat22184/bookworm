@@ -3,6 +3,7 @@
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useCallback } from 'react';
 
 // Implementing simple manual debounce to avoid extra dep for now
 function debounce<T extends (...args: any[]) => void>(func: T, wait: number) {
@@ -30,8 +31,13 @@ export function SearchInput({ onSearch, placeholder = 'Search...', initialValue 
     router.replace(`?${params.toString()}`);
   };
   
-  // Actually implementing debounce efficiently inside component
-  const debouncedSearch = useDebounce(handleSearch, 300);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debouncedSearch = useCallback(
+    debounce((term: string) => {
+      handleSearch(term);
+    }, 300),
+    [searchParams, router] // Dependencies for handleSearch logic
+  );
 
   return (
     <div className="relative">

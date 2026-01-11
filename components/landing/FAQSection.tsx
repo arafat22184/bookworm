@@ -14,8 +14,8 @@ export function FAQSection() {
     <section id="faq" className="py-24 bg-muted/40 backdrop-blur">
        <div className="w-11/12 max-w-3xl mx-auto space-y-12">
           <div className="text-center space-y-4">
-              <h2 className="text-3xl md:text-4xl font-serif font-bold">Frequently Asked Questions</h2>
-              <p className="text-muted-foreground">Got questions? We've got answers.</p>
+              <h2 className="text-4xl md:text-5xl font-serif font-bold text-foreground">Frequently Asked <span className="text-primary decoration-secondary underline decoration-wavy">Questions</span></h2>
+            <p className="text-xl text-muted-foreground">Everything you need to know about BookWorm&apos;s features and pricing.</p>
            </div>
            <div className="bg-card rounded-3xl border shadow-sm p-2">
              <Accordion type="single" collapsible className="w-full">

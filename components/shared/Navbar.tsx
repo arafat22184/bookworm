@@ -6,10 +6,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Sidebar } from './Sidebar';
 import { useState } from 'react';
 
-interface NavbarProps {
-  user: any;
-}
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function Navbar({ user }: { user: any }) {
   const [isOpen, setIsOpen] = useState(false);

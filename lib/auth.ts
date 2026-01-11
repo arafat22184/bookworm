@@ -10,10 +10,12 @@ if (!ACCESS_SECRET || !REFRESH_SECRET) {
   throw new Error('JWT secrets must be defined in .env.local');
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const signAccessToken = (payload: any) => {
   return jwt.sign(payload, ACCESS_SECRET, { expiresIn: '15m' });
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const signRefreshToken = (payload: any) => {
   return jwt.sign(payload, REFRESH_SECRET, { expiresIn: '7d' });
 };

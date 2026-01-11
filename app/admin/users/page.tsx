@@ -1,4 +1,3 @@
-import { getCurrentUser } from '@/lib/session';
 import connectToDatabase from '@/lib/db';
 import User from '@/lib/models/User';
 import {

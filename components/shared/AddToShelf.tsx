@@ -18,7 +18,7 @@ export function AddToShelf({ bookId, currentStatus }: { bookId: string, currentS
         if (!res.ok) throw new Error();
         toast.success("Shelf updated");
         router.refresh();
-    } catch (e) {
+    } catch (_e) {
         toast.error("Failed to update shelf");
     }
   };
