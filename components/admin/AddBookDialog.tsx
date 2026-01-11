@@ -45,6 +45,7 @@ export function AddBookDialog() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [genres, setGenres] = useState<any[]>([]);
 
   useEffect(() => {
@@ -80,7 +81,7 @@ export function AddBookDialog() {
       setOpen(false);
       form.reset();
       router.refresh();
-    } catch (error) {
+    } catch (_error) {
       toast.error('Something went wrong');
     } finally {
       setLoading(false);

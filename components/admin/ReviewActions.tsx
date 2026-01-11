@@ -18,8 +18,8 @@ export function ReviewActions({ reviewId }: { reviewId: string }) {
             if (!res.ok) throw new Error();
             toast.success(`Review ${status}`);
             router.refresh();
-        } catch(e) {
-            toast.error("Action failed");
+        } catch (_e) {
+            toast.error('Something went wrong');
         }
     };
 

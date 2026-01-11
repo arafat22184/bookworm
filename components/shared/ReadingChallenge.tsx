@@ -27,7 +27,7 @@ export function ReadingChallenge({ challenge }: { challenge: { goal: number, cur
             setIsEditing(false);
             router.refresh();
         }
-    } catch(e) {
+    } catch (_e) {
         toast.error("Failed");
     }
   };
