@@ -11,7 +11,7 @@ export async function middleware(req: NextRequest) {
   const publicPaths = ['/login', '/register', '/api/auth/login', '/api/auth/register', '/api/auth/refresh', '/api/auth/logout'];
 
   // Public assets should also be excluded via matcher, but double checking here just in case
-  if (publicPaths.some(path => pathname.startsWith(path))) {
+  if (pathname === '/' || publicPaths.some(path => pathname.startsWith(path))) {
     // If user is already logged in and tries to access login/register, verify and redirect
     const token = req.cookies.get('accessToken')?.value;
     if (token && (pathname === '/login' || pathname === '/register')) {

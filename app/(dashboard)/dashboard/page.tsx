@@ -17,7 +17,7 @@ export default async function UserDashboardPage() {
   if (!userSession) redirect('/login');
 
   await connectToDatabase();
-  const user = await User.findById(userSession.id);
+  const user = await User.findById(userSession.id).lean();
   
   // Re-fetch to ensure user model data like challenge is fresh if modified elsewhere
   // Actually userSession might be stale if challenge updated via API but session not refreshed.
@@ -55,6 +55,12 @@ export default async function UserDashboardPage() {
            </CardHeader>
            <CardContent>
              <div className="text-2xl font-bold">{totalRead}</div>
+             {totalRead === 0 && (
+                <div className="mt-4 flex flex-col items-center opacity-70">
+                    <img src="/empty-state.png" alt="No books" className="w-24 h-24 mb-2 opacity-50 grayscale" />
+                    <p className="text-xs text-muted-foreground">Start reading!</p>
+                </div>
+             )}
            </CardContent>
         </Card>
 
