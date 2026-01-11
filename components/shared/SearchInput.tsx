@@ -3,7 +3,6 @@
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useDebouncedCallback } from 'use-debounce'; // user needs to install use-debounce or I implement debounce manually
 
 // Implementing simple manual debounce to avoid extra dep for now
 function useDebounce(callback: (...args: any[]) => void, delay: number) {

@@ -54,7 +54,7 @@ export default async function BookPage({ params }: BookPageProps) {
     <div className="max-w-4xl mx-auto space-y-8">
       <div className="flex flex-col md:flex-row gap-8">
         <div className="w-full md:w-1/3 space-y-4">
-           <div className="aspect-[2/3] relative rounded-lg overflow-hidden border shadow-lg">
+           <div className="aspect-2/3 relative rounded-lg overflow-hidden border shadow-lg">
              <img src={serializedBook.coverImage} alt={serializedBook.title} className="w-full h-full object-cover" />
            </div>
            
