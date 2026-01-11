@@ -33,7 +33,7 @@ export function ReadingChallenge({ challenge }: { challenge: { goal: number, cur
   };
 
   return (
-    <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
+    <Card className="bg-linear-to-br from-primary/10 to-primary/5 border-primary/20">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <div className="space-y-1">
             <CardTitle className="flex items-center gap-2">
