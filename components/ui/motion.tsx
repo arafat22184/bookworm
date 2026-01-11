@@ -1,8 +1,6 @@
 'use client';
 
 import { motion, HTMLMotionProps } from 'framer-motion';
-import { cn } from '@/lib/utils';
-import React from 'react';
 
 type MotionDivProps = HTMLMotionProps<'div'>;
 

@@ -1,12 +1,11 @@
 'use client';
 
-import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Star, Quote } from 'lucide-react';
+import { Quote } from 'lucide-react';
 
 function TestimonialCard({ quote, author, role, imageId }: { quote: string, author: string, role: string, imageId: number }) {
     return (
-        <div className="h-full w-full p-[1px] bg-gradient-to-br from-transparent to-transparent hover:from-primary/20 hover:to-secondary/20 rounded-3xl transition-all duration-500 group">
+        <div className="h-full w-full p-px bg-linear-to-br from-transparent to-transparent hover:from-primary/20 hover:to-secondary/20 rounded-3xl transition-all duration-500 group">
             <div className="h-full bg-card/80 backdrop-blur-sm border border-border/40 p-8 rounded-3xl shadow-sm group-hover:shadow-2xl transition-all duration-500 flex flex-col justify-between gap-6">
                 <div>
                     <Quote className="h-10 w-10 text-primary/10 mb-6" />
