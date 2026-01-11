@@ -8,10 +8,9 @@ import { useState } from 'react';
 
 interface NavbarProps {
   user: any;
-  onLogout: () => void;
 }
 
-export function Navbar({ user, onLogout }: NavbarProps) {
+export function Navbar({ user }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -24,7 +23,7 @@ export function Navbar({ user, onLogout }: NavbarProps) {
         </SheetTrigger>
         <SheetContent side="left" className="p-0 w-72">
            {/* Close sheet on click by passing a wrapper or just relying on link clicks if we optimized Sidebar */}
-           <Sidebar user={user} onLogout={onLogout} />
+           <Sidebar user={user} />
         </SheetContent>
       </Sheet>
       <div className="ml-4 font-serif text-xl font-bold">BookWorm</div>
