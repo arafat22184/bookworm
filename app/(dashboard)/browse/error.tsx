@@ -27,7 +27,7 @@ export default function BrowseError({
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-sm text-muted-foreground">
-            We couldn't load the book catalog. Please try again.
+            We couldn&apos;t load the book catalog. Please try again.
           </p>
           
           {process.env.NODE_ENV === 'development' && (

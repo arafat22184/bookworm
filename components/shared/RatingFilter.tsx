@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -16,17 +16,20 @@ import { Badge } from '@/components/ui/badge';
 export function RatingFilter() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [minRating, setMinRating] = useState<number>(0);
-  const [maxRating, setMaxRating] = useState<number>(5);
-
-  // Initialize from URL
-  useEffect(() => {
+  
+  // Derive initial values from URL params
+  const initialMinRating = useMemo(() => {
     const minParam = searchParams.get('minRating');
-    const maxParam = searchParams.get('maxRating');
-    
-    if (minParam) setMinRating(Number(minParam));
-    if (maxParam) setMaxRating(Number(maxParam));
+    return minParam ? Number(minParam) : 0;
   }, [searchParams]);
+  
+  const initialMaxRating = useMemo(() => {
+    const maxParam = searchParams.get('maxRating');
+    return maxParam ? Number(maxParam) : 5;
+  }, [searchParams]);
+  
+  const [minRating, setMinRating] = useState<number>(initialMinRating);
+  const [maxRating, setMaxRating] = useState<number>(initialMaxRating);
 
   const applyFilter = () => {
     const params = new URLSearchParams(searchParams);

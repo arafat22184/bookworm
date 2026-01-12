@@ -27,7 +27,7 @@ export default function DashboardError({
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-sm text-muted-foreground">
-            We couldn't load your dashboard. This might be a temporary issue.
+            We couldn&apos;t load your dashboard. This might be a temporary issue.
           </p>
           
           {process.env.NODE_ENV === 'development' && (

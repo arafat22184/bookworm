@@ -15,7 +15,6 @@ const GenreSchema: Schema<IGenre> = new Schema({
 }, { timestamps: true });
 
 // Index for faster lookups
-GenreSchema.index({ slug: 1 });
 
 const Genre: Model<IGenre> = mongoose.models.Genre || mongoose.model<IGenre>('Genre', GenreSchema);
 export default Genre;

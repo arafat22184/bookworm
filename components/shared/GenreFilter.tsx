@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -26,16 +26,11 @@ interface GenreFilterProps {
 export function GenreFilter({ genres }: GenreFilterProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
-
-  // Initialize selected genres from URL
-  useEffect(() => {
+  
+  // Derive selected genres from URL params
+  const selectedGenres = useMemo(() => {
     const genreParam = searchParams.get('genre');
-    if (genreParam) {
-      setSelectedGenres(genreParam.split(','));
-    } else {
-      setSelectedGenres([]);
-    }
+    return genreParam ? genreParam.split(',') : [];
   }, [searchParams]);
 
   const toggleGenre = (genreId: string) => {
@@ -43,12 +38,10 @@ export function GenreFilter({ genres }: GenreFilterProps) {
       ? selectedGenres.filter(id => id !== genreId)
       : [...selectedGenres, genreId];
 
-    setSelectedGenres(newSelection);
     updateURL(newSelection);
   };
 
   const clearFilters = () => {
-    setSelectedGenres([]);
     updateURL([]);
   };
 

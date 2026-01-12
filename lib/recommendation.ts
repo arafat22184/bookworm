@@ -128,7 +128,7 @@ export async function generateRecommendations(
   // Score each book
   const scoredBooks: RecommendationResult[] = candidateBooks.map(book => {
     let score = 0;
-    let matchedGenres: string[] = [];
+    const matchedGenres: string[] = [];
 
     // Calculate score based on genre matches and weights
     for (const genre of book.genres as unknown as { _id: string; name: string }[]) {
