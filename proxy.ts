@@ -10,8 +10,28 @@ export async function proxy(req: NextRequest) {
   // Define paths that do not require authentication
   const publicPaths = ['/login', '/register', '/api/auth/login', '/api/auth/register', '/api/auth/refresh', '/api/auth/logout', '/api/auth/check'];
 
-  // Public assets should also be excluded via matcher, but double checking here just in case
-  if (pathname === '/' || publicPaths.some(path => pathname.startsWith(path))) {
+  // Handle root path - redirect based on authentication
+  if (pathname === '/') {
+    const token = req.cookies.get('accessToken')?.value;
+    if (!token) {
+      return NextResponse.redirect(new URL('/login', req.url));
+    }
+
+    try {
+      const { payload } = await jwtVerify(token, ACCESS_SECRET);
+      // Redirect based on role
+      if (payload.role === 'admin') {
+        return NextResponse.redirect(new URL('/admin/dashboard', req.url));
+      } else {
+        return NextResponse.redirect(new URL('/my-library', req.url));
+      }
+    } catch {
+      return NextResponse.redirect(new URL('/login', req.url));
+    }
+  }
+
+  // Public paths - allow access but redirect if already logged in
+  if (publicPaths.some(path => pathname.startsWith(path))) {
     // If user is already logged in and tries to access login/register, verify and redirect
     const token = req.cookies.get('accessToken')?.value;
     if (token && (pathname === '/login' || pathname === '/register')) {
@@ -21,7 +41,7 @@ export async function proxy(req: NextRequest) {
         if (payload.role === 'admin') {
           return NextResponse.redirect(new URL('/admin/dashboard', req.url));
         } else {
-          return NextResponse.redirect(new URL('/dashboard', req.url));
+          return NextResponse.redirect(new URL('/my-library', req.url));
         }
       } catch {
         // Token invalid, let them stay on login page
@@ -46,7 +66,7 @@ export async function proxy(req: NextRequest) {
     // Admin Route Protection
     if (pathname.startsWith('/admin')) {
       if (payload.role !== 'admin') {
-        return NextResponse.redirect(new URL('/dashboard', req.url));
+        return NextResponse.redirect(new URL('/my-library', req.url));
       }
     }
 
