@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
-import { Button } from '@/components/ui/button';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -11,9 +11,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { Edit } from 'lucide-react';
-import { BookForm, BookFormValues } from './BookForm';
+} from "@/components/ui/dialog";
+import { Edit } from "lucide-react";
+import { BookForm, BookFormValues } from "./BookForm";
 
 interface Book extends BookFormValues {
   _id: string;
@@ -32,25 +32,25 @@ export function EditBookDialog({ book }: EditBookDialogProps) {
   // Transform book genres from objects to array of IDs if necessary
   const initialData: BookFormValues = {
     ...book,
-     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    genres: book.genres.map((g: any) => typeof g === 'string' ? g : g._id),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    genres: book.genres.map((g: any) => (typeof g === "string" ? g : g._id)),
   };
 
   const onSubmit = async (data: BookFormValues) => {
     try {
       const res = await fetch(`/api/books/${book._id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
 
-      if (!res.ok) throw new Error('Failed to update book');
+      if (!res.ok) throw new Error("Failed to update book");
 
-      toast.success('Book updated successfully');
+      toast.success("Book updated successfully");
       setOpen(false);
       router.refresh();
     } catch {
-      toast.error('Failed to update book');
+      toast.error("Failed to update book");
     }
   };
 
@@ -61,17 +61,21 @@ export function EditBookDialog({ book }: EditBookDialogProps) {
           <Edit className="h-4 w-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent
+        onWheel={(e) => e.stopPropagation()}
+        onTouchMove={(e) => e.stopPropagation()}
+        className="max-w-2xl max-h-[90vh] overflow-y-auto"
+      >
         <DialogHeader>
           <DialogTitle>Edit Book</DialogTitle>
           <DialogDescription>
             Make changes to the book details here.
           </DialogDescription>
         </DialogHeader>
-        <BookForm 
-            initialData={initialData} 
-            onSubmit={onSubmit} 
-            submitLabel="Save Changes"
+        <BookForm
+          initialData={initialData}
+          onSubmit={onSubmit}
+          submitLabel="Save Changes"
         />
       </DialogContent>
     </Dialog>
