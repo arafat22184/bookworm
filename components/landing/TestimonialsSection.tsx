@@ -83,13 +83,16 @@ export async function TestimonialsSection() {
   const testimonials = await getTestimonials();
 
   return (
-    <section id="testimonials" className="py-16 overflow-hidden bg-background">
-      <div className="space-y-16">
-        <div className="text-center space-y-4">
-          <h2 className="text-3xl md:text-5xl font-serif font-bold text-foreground">
+    <section
+      id="testimonials"
+      className="py-12 md:py-16 lg:py-24 overflow-hidden bg-background"
+    >
+      <div className="space-y-10 md:space-y-16">
+        <div className="text-center space-y-4 px-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-foreground">
             Loved by <span className="text-primary">Readers</span>
           </h2>
-          <p className="text-muted-foreground">
+          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
             Don&apos;t just take our word for it.
           </p>
         </div>

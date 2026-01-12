@@ -38,7 +38,7 @@ export function FeaturesSection() {
           <div className="inline-block rounded-full bg-primary/10 px-3 py-1 text-sm font-bold text-primary uppercase tracking-wider">
             Features
           </div>
-          <p className="text-xl md:text-2xl font-serif text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-2xl font-serif text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Everything you need to take your reading life to the next level. No
             clutter, just books.
           </p>

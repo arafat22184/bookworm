@@ -41,8 +41,8 @@ export function HowItWorksSection() {
             &quot;I loved it!&quot;
           </span>
         </h2>
-        <div className="flex flex-col lg:flex-row gap-20">
-          <div className="lg:w-1/2 space-y-16">
+        <div className="flex flex-col lg:flex-row gap-10 lg:gap-20">
+          <div className="lg:w-1/2 space-y-8 lg:space-y-16">
             <div className="sticky top-32">
               <div className="aspect-square rounded-3xl bg-muted relative overflow-hidden shadow-2xl skew-y-2 hover:skew-y-0 transition-transform duration-700">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -54,7 +54,7 @@ export function HowItWorksSection() {
               </div>
             </div>
           </div>
-          <div className="lg:w-1/2 space-y-24 pt-10">
+          <div className="lg:w-1/2 space-y-12 lg:space-y-24 pt-0 lg:pt-10">
             <StepItem
               number="01"
               title="Create your Profile"

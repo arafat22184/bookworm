@@ -26,16 +26,19 @@ const FAQS = [
 
 export function FAQSection() {
   return (
-    <section id="faq" className="py-16 bg-muted/40 backdrop-blur">
-      <div className="w-11/12 max-w-3xl mx-auto space-y-12">
+    <section
+      id="faq"
+      className="py-12 md:py-16 lg:py-24 bg-muted/40 backdrop-blur"
+    >
+      <div className="w-11/12 md:w-10/12 max-w-3xl mx-auto space-y-8 md:space-y-12">
         <div className="text-center space-y-4">
-          <h2 className="text-3xl md:text-5xl font-serif font-bold text-foreground">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-foreground">
             Frequently Asked{" "}
             <span className="text-primary decoration-secondary underline decoration-wavy">
               Questions
             </span>
           </h2>
-          <p className="text-xl text-muted-foreground">
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
             Everything you need to know about BookWorm&apos;s features and
             pricing.
           </p>
@@ -46,12 +49,12 @@ export function FAQSection() {
               <AccordionItem
                 value={`item-${i}`}
                 key={i}
-                className="px-6 border-b last:border-0 hover:bg-muted/50 transition-colors first:rounded-t-2xl last:rounded-b-2xl"
+                className="px-4 md:px-6 border-b last:border-0 hover:bg-muted/50 transition-colors first:rounded-t-2xl last:rounded-b-2xl"
               >
-                <AccordionTrigger className="text-lg font-medium hover:text-primary hover:no-underline py-6">
+                <AccordionTrigger className="text-base md:text-lg font-medium hover:text-primary hover:no-underline py-4 md:py-6 text-left">
                   {faq.q}
                 </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground text-base pb-6 leading-relaxed">
+                <AccordionContent className="text-muted-foreground text-sm md:text-base pb-4 md:pb-6 leading-relaxed">
                   {faq.a}
                 </AccordionContent>
               </AccordionItem>
