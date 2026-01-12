@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Star } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
@@ -14,33 +15,34 @@ interface BookCardProps {
   };
   progress?: number;
   status?: string;
-  totalPages?: number; // If we track total pages per book on Book model, currently not in initial schema but useful. Assuming progress is pages read.
+  totalPages?: number;
 }
 
 export function BookCard({ book, progress, status, totalPages = 300 }: BookCardProps) {
-  // Using a placeholder for total pages since it wasn't in the schema explicitly but progress is pages.
-  // We'll calculate percentage based on an assumed average or if Book model has totalPages later.
-  // For now, let's just show progress as a number or percentage if we had total.
+  const progressPercentage = progress && totalPages ? (progress / totalPages) * 100 : 0;
   
   return (
     <Link href={`/book/${book._id}`}>
-      <Card className="h-full overflow-hidden hover:shadow-lg transition-shadow border-zinc-200 dark:border-zinc-800">
-        <div className="aspect-2/3 relative overflow-hidden">
-           {/* Replace with Next.js Image if domain configured, else img */}
-           {/* eslint-disable-next-line @next/next/no-img-element */}
-           <img 
+      <Card className="h-full overflow-hidden hover:shadow-lg transition-shadow border-zinc-200 dark:border-zinc-800 group">
+        <div className="aspect-[2/3] relative overflow-hidden bg-muted">
+           <Image 
              src={book.coverImage} 
-             alt={book.title} 
-             className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+             alt={book.title}
+             fill
+             sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
+             className="object-cover group-hover:scale-105 transition-transform duration-300"
+             priority={false}
            />
            {status && (
-             <Badge className="absolute top-2 right-2 capitalize" variant="secondary">
+             <Badge className="absolute top-2 right-2 capitalize z-10" variant="secondary">
                {status.replace(/-/g, ' ')}
              </Badge>
            )}
         </div>
         <CardContent className="p-4 space-y-1">
-          <h3 className="font-serif font-bold truncate" title={book.title}>{book.title}</h3>
+          <h3 className="font-serif font-bold truncate" title={book.title}>
+            {book.title}
+          </h3>
           <p className="text-sm text-muted-foreground truncate">{book.author}</p>
           <div className="flex items-center gap-1 text-sm text-yellow-500">
             <Star className="h-4 w-4 fill-current" />
@@ -52,9 +54,11 @@ export function BookCard({ book, progress, status, totalPages = 300 }: BookCardP
              <div className="w-full space-y-1">
                <div className="flex justify-between text-xs text-muted-foreground">
                  <span>{progress} pages read</span>
-                 {/* <span>{Math.round((progress / totalPages) * 100)}%</span> */}
+                 {totalPages && (
+                   <span>{Math.round(progressPercentage)}%</span>
+                 )}
                </div>
-               <Progress value={(progress / totalPages) * 100} className="h-1.5" />
+               <Progress value={progressPercentage} className="h-1.5" />
              </div>
           </CardFooter>
         )}
@@ -62,3 +66,4 @@ export function BookCard({ book, progress, status, totalPages = 300 }: BookCardP
     </Link>
   );
 }
+
