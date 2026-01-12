@@ -36,6 +36,16 @@ export interface ReadingChallenge {
   current: number;
 }
 
+export interface ProfileResponse {
+  id: string;
+  name: string;
+  email: string;
+  role: 'user' | 'admin';
+  image?: string;
+  challenge: ReadingChallenge;
+}
+
+
 // Book Types
 export interface PopulatedGenre {
   _id: string;
@@ -198,6 +208,18 @@ export interface ReviewFormData {
 export interface ChallengeFormData {
   goal: number;
 }
+
+export interface UpdateProfileFormData {
+  name?: string;
+  image?: string;
+}
+
+export interface ChangePasswordFormData {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
 
 // Activity Types (for future social features)
 export type ActivityType =
