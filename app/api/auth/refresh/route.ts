@@ -13,8 +13,7 @@ export async function POST() {
       return errorResponse('Refresh token missing', 401);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const decoded: any = verifyRefreshToken(token);
+    const decoded = verifyRefreshToken(token);
 
     if (!decoded) {
       return errorResponse('Invalid or expired refresh token', 401);
@@ -28,7 +27,7 @@ export async function POST() {
     }
 
     // Token Rotation: Issue new Access AND Refresh tokens
-    const payload = { userId: user._id, role: user.role };
+    const payload = { userId: user._id.toString(), role: user.role };
     const newAccessToken = signAccessToken(payload);
     const newRefreshToken = signRefreshToken(payload);
 
@@ -39,7 +38,7 @@ export async function POST() {
       // We don't necessarily send refresh token back in body effectively as it is HttpOnly,
       // but passing it is fine or just empty.
       user: {
-        id: user._id,
+        id: user._id.toString(),
         name: user.name,
         email: user.email,
         role: user.role,
