@@ -42,5 +42,15 @@ export function useAuth() {
     checkAuth();
   }, []);
 
-  return { isAuthenticated, isLoading, user };
+  const logout = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      setIsAuthenticated(false);
+      setUser(null);
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
+
+  return { isAuthenticated, isLoading, user, logout };
 }

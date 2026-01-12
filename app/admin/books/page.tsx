@@ -3,6 +3,8 @@ import connectToDatabase from '@/lib/db';
 import Book from '@/lib/models/Book';
 import { AddBookDialog } from '@/components/admin/AddBookDialog';
 import { AddGenreDialog } from '@/components/admin/AddGenreDialog';
+import { EditBookDialog } from '@/components/admin/EditBookDialog';
+import { DeleteBookDialog } from '@/components/admin/DeleteBookDialog';
 import {
   Table,
   TableBody,
@@ -12,8 +14,6 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Edit, Trash } from 'lucide-react';
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const serialize = (obj: any) => JSON.parse(JSON.stringify(obj));
@@ -64,13 +64,8 @@ export default async function AdminBooksPage() {
                 <TableCell>{book.avgRating?.toFixed(1) || 'N/A'}</TableCell>
                 <TableCell>
                   <div className="flex gap-2">
-                    <Button variant="ghost" size="icon">
-                        <Edit className="h-4 w-4" />
-                    </Button>
-                     {/* Delete needs endpoint implementation */}
-                    <Button variant="ghost" size="icon" className="text-destructive">
-                        <Trash className="h-4 w-4" />
-                    </Button>
+                    <EditBookDialog book={book} />
+                    <DeleteBookDialog bookId={book._id} bookTitle={book.title} />
                   </div>
                 </TableCell>
               </TableRow>
