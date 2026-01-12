@@ -23,6 +23,13 @@ export function ReviewForm({ bookId }: { bookId: string }) {
                 body: JSON.stringify({ bookId, rating, comment }),
             });
             const data = await res.json();
+            
+            if (res.status === 401) {
+                toast.error("Please login to review");
+                router.push('/login');
+                return;
+            }
+
             if (!res.ok) throw new Error(data.message);
             
             toast.success("Review submitted for approval");

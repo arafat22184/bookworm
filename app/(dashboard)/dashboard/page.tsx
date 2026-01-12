@@ -1,17 +1,16 @@
 import { getCurrentUser } from '@/lib/session';
 import connectToDatabase from '@/lib/db';
 import User from '@/lib/models/User';
-import Book from '@/lib/models/Book';
 import Shelf from '@/lib/models/Shelf';
+import Review from '@/lib/models/Review';
 import { ReadingChallenge } from '@/components/shared/ReadingChallenge';
 import { BookCard } from '@/components/shared/BookCard';
+import { generateRecommendations } from '@/lib/recommendation';
+import { serialize } from '@/lib/utils';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpen, Star } from 'lucide-react';
+import { BookOpen, Star, Sparkles } from 'lucide-react';
 import { redirect } from 'next/navigation';
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const serialize = (obj: any) => JSON.parse(JSON.stringify(obj));
 
 export default async function UserDashboardPage() {
   const userSession = await getCurrentUser();
@@ -19,25 +18,26 @@ export default async function UserDashboardPage() {
 
   await connectToDatabase();
   const user = await User.findById(userSession.id).lean();
-  
-  // Re-fetch to ensure user model data like challenge is fresh if modified elsewhere
-  // Actually userSession might be stale if challenge updated via API but session not refreshed.
-  // We use `user` from DB.
 
   // Stats
-  const shelves = await Shelf.find({ user: userSession.id });
-  const readBooks = shelves.filter((s) => s.status === 'read');
-  const totalRead = readBooks.length;
-  // If we had pagesRead in Shelf history, we'd sum it. For now, sum of progress of ALL books? 
-  // User wants "Pages read".
-  const totalPages = shelves.reduce((acc, curr) => acc + (curr.progress || 0), 0);
+  const userShelves = await Shelf.find({ user: userSession.id });
+  const readBooks = userShelves.filter((shelf) => shelf.status === 'read');
+  const totalBooksRead = readBooks.length;
+  const totalPagesRead = userShelves.reduce((sum, shelf) => sum + (shelf.progress || 0), 0);
 
-  // Recommendations: Top Rated & New
-  const rawTopRated = await Book.find().sort({ avgRating: -1 }).limit(5).lean();
-  const rawNewest = await Book.find().sort({ createdAt: -1 }).limit(5).lean();
+  // Calculate average rating
+  const userReviews = await Review.find({ user: userSession.id, status: 'approved' });
+  const averageRating = userReviews.length > 0
+    ? userReviews.reduce((sum, review) => sum + review.rating, 0) / userReviews.length
+    : 0;
 
-  const topRated = serialize(rawTopRated);
-  const newest = serialize(rawNewest);
+  // Get personalized recommendations
+  const recommendations = await generateRecommendations(userSession.id, {
+    limit: 15,
+    minRating: 3.5,
+  });
+
+  const recommendedBooks = serialize(recommendations);
 
   return (
     <div className="space-y-8">
@@ -55,8 +55,8 @@ export default async function UserDashboardPage() {
              <BookOpen className="h-4 w-4 text-muted-foreground" />
            </CardHeader>
            <CardContent>
-             <div className="text-2xl font-bold">{totalRead}</div>
-             {totalRead === 0 && (
+             <div className="text-2xl font-bold">{totalBooksRead}</div>
+             {totalBooksRead === 0 && (
                 <div className="mt-4 flex flex-col items-center opacity-70">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src="/empty-state.png" alt="No books" className="w-24 h-24 mb-2 opacity-50 grayscale" />
@@ -72,7 +72,7 @@ export default async function UserDashboardPage() {
              <BookOpen className="h-4 w-4 text-muted-foreground" />
            </CardHeader>
            <CardContent>
-             <div className="text-2xl font-bold">{totalPages}</div>
+             <div className="text-2xl font-bold">{totalPagesRead.toLocaleString()}</div>
            </CardContent>
         </Card>
 
@@ -82,35 +82,61 @@ export default async function UserDashboardPage() {
              <Star className="h-4 w-4 text-muted-foreground" />
            </CardHeader>
            <CardContent>
-             <div className="text-2xl font-bold">-</div> 
-             {/* We need to fetch reviews to calc this, skipped for perf or do separate agg */}
+             <div className="text-2xl font-bold">
+               {averageRating > 0 ? averageRating.toFixed(1) : '-'}
+             </div>
+             {averageRating > 0 && (
+               <p className="text-xs text-muted-foreground mt-1">
+                 Based on {userReviews.length} {userReviews.length === 1 ? 'review' : 'reviews'}
+               </p>
+             )}
            </CardContent>
         </Card>
       </div>
 
+      {/* Personalized Recommendations */}
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-serif font-bold">Top Rated Books</h2>
+        <div className="flex items-center gap-2">
+          <Sparkles className="h-6 w-6 text-primary" />
+          <div>
+            <h2 className="text-2xl font-serif font-bold">Recommended for You</h2>
+            <p className="text-sm text-muted-foreground">
+              {totalBooksRead >= 3
+                ? 'Based on your reading history and preferences'
+                : 'Popular books to get you started'}
+            </p>
+          </div>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+        
+        {recommendedBooks.length === 0 ? (
+          <Card>
+            <CardContent className="flex flex-col items-center justify-center py-12">
+              <BookOpen className="h-12 w-12 text-muted-foreground mb-4" />
+              <h3 className="text-lg font-semibold mb-2">No recommendations yet</h3>
+              <p className="text-sm text-muted-foreground text-center max-w-md">
+                Start reading and rating books to get personalized recommendations!
+              </p>
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-            {topRated.map((book: any) => (
-                <BookCard key={book._id} book={book} />
+            {recommendedBooks.map((rec: any) => (
+              <div key={rec.book._id} className="relative group">
+                <BookCard book={rec.book} />
+                {/* Recommendation reason tooltip */}
+                <div className="absolute inset-x-0 bottom-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                  <div className="bg-popover text-popover-foreground p-3 rounded-lg shadow-lg text-xs border mx-2 mb-2">
+                    <p className="font-medium mb-1">Why this book?</p>
+                    <p className="text-muted-foreground">{rec.reason}</p>
+                  </div>
+                </div>
+              </div>
             ))}
-        </div>
-      </div>
-
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-serif font-bold">New Arrivals</h2>
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-              {newest.map((book: any) => (
-                <BookCard key={book._id} book={book} />
-            ))}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
 }
+
