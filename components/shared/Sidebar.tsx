@@ -13,6 +13,7 @@ import {
   Settings,
   LogOut,
   User as UserIcon,
+  MessageSquare,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -65,6 +66,11 @@ export function Sidebar({ user }: SidebarProps) {
       icon: GraduationCap,
       href: "/tutorials",
     },
+    {
+      label: "Profile",
+      icon: Settings,
+      href: "/profile",
+    },
   ];
 
   const adminRoutes = [
@@ -85,8 +91,13 @@ export function Sidebar({ user }: SidebarProps) {
     },
     {
       label: "Manage Reviews",
-      icon: Settings, // or MessageSquare
+      icon: MessageSquare,
       href: "/admin/reviews",
+    },
+    {
+      label: "Profile",
+      icon: Settings,
+      href: "/profile",
     },
   ];
 
@@ -124,18 +135,20 @@ export function Sidebar({ user }: SidebarProps) {
         </div>
       </ScrollArea>
       <div className="p-4 border-t mt-auto">
-        <div className="flex items-center gap-3 mb-4 px-2">
-          <Avatar>
-            <AvatarImage src={user.image} />
-            <AvatarFallback>{user.name?.[0]?.toUpperCase()}</AvatarFallback>
-          </Avatar>
-          <div className="overflow-hidden">
-            <p className="text-sm font-medium truncate">{user.name}</p>
-            <p className="text-xs text-muted-foreground truncate">
-              {user.email}
-            </p>
+        <Link href="/profile" className="block mb-4">
+          <div className="flex items-center gap-3 px-2 py-2 rounded-md hover:bg-secondary/50 transition-colors cursor-pointer">
+            <Avatar>
+              <AvatarImage src={user.image} />
+              <AvatarFallback>{user.name?.[0]?.toUpperCase()}</AvatarFallback>
+            </Avatar>
+            <div className="overflow-hidden">
+              <p className="text-sm font-medium truncate">{user.name}</p>
+              <p className="text-xs text-muted-foreground truncate">
+                {user.email}
+              </p>
+            </div>
           </div>
-        </div>
+        </Link>
         <Button
           variant="outline"
           className="w-full justify-start gap-2"
