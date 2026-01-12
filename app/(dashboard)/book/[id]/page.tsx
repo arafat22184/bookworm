@@ -1,10 +1,8 @@
-import { notFound, redirect } from 'next/navigation';
-import { getCurrentUser } from '@/lib/session';
+import { notFound } from 'next/navigation';
 import connectToDatabase from '@/lib/db';
 import Book from '@/lib/models/Book';
 import Review from '@/lib/models/Review';
 import User from '@/lib/models/User';
-import Shelf from '@/lib/models/Shelf';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -16,13 +14,19 @@ interface BookPageProps {
   params: Promise<{ id: string }>;
 }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const serialize = (obj: any) => JSON.parse(JSON.stringify(obj));
 
-export default async function BookPage({ params }: BookPageProps) {
-  const user = await getCurrentUser();
-  if (!user) redirect('/login');
+export const dynamic = 'force-static';
+export const dynamicParams = true;
 
+export async function generateStaticParams() {
+  await connectToDatabase();
+  const books = await Book.find().select('_id').lean();
+  return books.map((book) => ({ id: book._id.toString() }));
+}
+
+export default async function BookPage({ params }: BookPageProps) {
   await connectToDatabase();
   
   // ensure models
@@ -46,8 +50,7 @@ export default async function BookPage({ params }: BookPageProps) {
     .sort({ createdAt: -1 })
     .lean();
     
-  // Check if user has this book on shelf
-  const shelfEntry = await Shelf.findOne({ user: user.id, book: id });
+  // Shelf status is now fetched client-side component
 
   const reviews = serialize(rawReviews);
   const serializedBook = serialize(book);
@@ -61,7 +64,7 @@ export default async function BookPage({ params }: BookPageProps) {
                <img src={serializedBook.coverImage} alt={serializedBook.title} className="w-full h-full object-cover" />
            </div>
            
-           <AddToShelf bookId={id} currentStatus={shelfEntry?.status} />
+           <AddToShelf bookId={id} />
         </div>
         
         <div className="flex-1 space-y-6">

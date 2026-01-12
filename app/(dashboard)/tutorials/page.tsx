@@ -5,6 +5,10 @@ import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/ca
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const serialize = (obj: any) => JSON.parse(JSON.stringify(obj));
 
+export const revalidate = 3600; // Revalidate every hour
+export const dynamic = 'force-static';
+
+
 export default async function TutorialsPage() {
   await connectToDatabase();
   const rawTutorials = await Tutorial.find().sort({ createdAt: -1 });
