@@ -14,7 +14,7 @@ export function CTASection() {
         transition={{ duration: 0.8 }}
         className="w-11/12 max-w-4xl mx-auto space-y-10 relative z-10"
       >
-        <h2 className="text-5xl md:text-7xl font-serif font-bold tracking-tight">
+        <h2 className="text-4xl md:text-7xl font-serif font-bold tracking-tight">
           Ready to start your chapter?
         </h2>
         <p className="text-xl text-gray-400 max-w-2xl mx-auto">

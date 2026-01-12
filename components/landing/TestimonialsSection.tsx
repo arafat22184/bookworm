@@ -86,7 +86,7 @@ export async function TestimonialsSection() {
     <section id="testimonials" className="py-16 overflow-hidden bg-background">
       <div className="space-y-16">
         <div className="text-center space-y-4">
-          <h2 className="text-4xl md:text-5xl font-serif font-bold text-foreground">
+          <h2 className="text-3xl md:text-5xl font-serif font-bold text-foreground">
             Loved by <span className="text-primary">Readers</span>
           </h2>
           <p className="text-muted-foreground">

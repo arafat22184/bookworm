@@ -11,7 +11,7 @@ function StatItem({
 }) {
   return (
     <FadeIn delay={delay} className="space-y-2 group cursor-default">
-      <div className="text-5xl md:text-6xl font-serif font-bold text-transparent bg-clip-text bg-linear-to-br from-primary to-secondary group-hover:scale-110 transition-transform duration-300 ease-out">
+      <div className="text-4xl md:text-6xl font-serif font-bold text-transparent bg-clip-text bg-linear-to-br from-primary to-secondary group-hover:scale-110 transition-transform duration-300 ease-out">
         {value}
       </div>
       <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">

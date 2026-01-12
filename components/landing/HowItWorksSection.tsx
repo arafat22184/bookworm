@@ -26,7 +26,10 @@ function StepItem({
 
 export function HowItWorksSection() {
   return (
-    <section id="how-it-works" className="py-16 bg-card border-y relative">
+    <section
+      id="how-it-works"
+      className="py-12 md:py-16 bg-card border-y relative"
+    >
       <div className="w-11/12 max-w-7xl mx-auto relative z-10">
         <h2 className="text-4xl md:text-6xl text-center font-serif font-bold leading-tight mb-8">
           Your journey from

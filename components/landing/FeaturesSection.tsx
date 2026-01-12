@@ -32,7 +32,7 @@ function BentoCard({
 
 export function FeaturesSection() {
   return (
-    <section id="features" className="py-16 relative overflow-hidden">
+    <section id="features" className="py-12 md:py-16 relative overflow-hidden">
       <div className="w-11/12 max-w-7xl mx-auto space-y-16">
         <div className="text-center space-y-4 max-w-3xl mx-auto">
           <div className="inline-block rounded-full bg-primary/10 px-3 py-1 text-sm font-bold text-primary uppercase tracking-wider">
