@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Generate tokens
-    const payload = { userId: user._id, role: user.role };
+    const payload = { userId: user._id.toString(), role: user.role };
     const accessToken = signAccessToken(payload);
     const refreshToken = signRefreshToken(payload);
 
@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
 
     return successResponse({
       user: {
-        id: user._id,
+        id: user._id.toString(),
         name: user.name,
         email: user.email,
         role: user.role,
