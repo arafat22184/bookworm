@@ -10,39 +10,15 @@ export async function proxy(req: NextRequest) {
   // Define paths that do not require authentication
   const publicPaths = ['/login', '/register', '/api/auth/login', '/api/auth/register', '/api/auth/refresh', '/api/auth/logout', '/api/auth/check'];
 
-  // Handle root path - redirect based on authentication
-  if (pathname === '/') {
-    const token = req.cookies.get('accessToken')?.value;
-    if (!token) {
-      return NextResponse.redirect(new URL('/login', req.url));
-    }
-
-    try {
-      const { payload } = await jwtVerify(token, ACCESS_SECRET);
-      // Redirect based on role
-      if (payload.role === 'admin') {
-        return NextResponse.redirect(new URL('/admin/dashboard', req.url));
-      } else {
-        return NextResponse.redirect(new URL('/my-library', req.url));
-      }
-    } catch {
-      return NextResponse.redirect(new URL('/login', req.url));
-    }
-  }
-
   // Public paths - allow access but redirect if already logged in
   if (publicPaths.some(path => pathname.startsWith(path))) {
-    // If user is already logged in and tries to access login/register, verify and redirect
+    // If user is already logged in and tries to access login/register, redirect to landing page
     const token = req.cookies.get('accessToken')?.value;
     if (token && (pathname === '/login' || pathname === '/register')) {
       try {
-        const { payload } = await jwtVerify(token, ACCESS_SECRET);
-        // Redirect based on role
-        if (payload.role === 'admin') {
-          return NextResponse.redirect(new URL('/admin/dashboard', req.url));
-        } else {
-          return NextResponse.redirect(new URL('/my-library', req.url));
-        }
+        await jwtVerify(token, ACCESS_SECRET);
+        // Redirect to landing page
+        return NextResponse.redirect(new URL('/', req.url));
       } catch {
         // Token invalid, let them stay on login page
       }
@@ -54,9 +30,7 @@ export async function proxy(req: NextRequest) {
   const token = req.cookies.get('accessToken')?.value;
 
   if (!token) {
-    // If we have a refresh token, we technically could refresh, but client-side logic is preferred for that.
-    // For middleware protection, if no access token, we assume unauthenticated for the requested resource.
-    // Redirect to login.
+    // Redirect to login
     return NextResponse.redirect(new URL(`/login?from=${encodeURIComponent(pathname)}`, req.url));
   }
 
@@ -78,9 +52,6 @@ export async function proxy(req: NextRequest) {
 
   } catch {
     // Access token expired or invalid
-    // Ideally we would check for refresh token here, but verifying refresh token might require DB check which is not allowed in Edge middleware easily,
-    // or requires a separate secret. Assuming strictly stateless middleware for now, redirection is safer.
-    // The client app should handle token refresh proactively.
     return NextResponse.redirect(new URL(`/login?from=${encodeURIComponent(pathname)}`, req.url));
   }
 }
