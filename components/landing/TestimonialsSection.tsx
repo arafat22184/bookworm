@@ -67,8 +67,8 @@ async function getTestimonials() {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       author: (review.user as any)?.name || "Anonymous Reader",
       role: "Verified Reader",
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       imageId:
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (review.user as any)?._id?.toString() || Math.random().toString(),
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       userImage: (review.user as any)?.image,
