@@ -1,12 +1,20 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Library, LayoutDashboard, BookOpen, GraduationCap, Settings, LogOut, User as UserIcon } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Library,
+  LayoutDashboard,
+  BookOpen,
+  GraduationCap,
+  Settings,
+  LogOut,
+  User as UserIcon,
+} from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface SidebarProps {
   user: {
@@ -23,84 +31,87 @@ export function Sidebar({ user }: SidebarProps) {
 
   const handleLogout = async () => {
     try {
-      const res = await fetch('/api/auth/logout', {
-        method: 'POST',
+      const res = await fetch("/api/auth/logout", {
+        method: "POST",
       });
       if (res.ok) {
-        router.push('/login');
+        router.push("/login");
         router.refresh();
       }
     } catch (error) {
-      console.error('Logout failed', error);
+      console.error("Logout failed", error);
     }
   };
 
   const routes = [
     {
-      label: 'Home',
+      label: "Home",
       icon: LayoutDashboard,
-      href: user.role === 'admin' ? '/admin/dashboard' : '/dashboard', // Adjust default home based on role
+      href: user.role === "admin" ? "/admin/dashboard" : "/dashboard", // Adjust default home based on role
     },
     {
-      label: 'My Library',
+      label: "My Library",
       icon: Library,
-      href: '/my-library',
-      hidden: user.role === 'admin', // Maybe admins also want to read? Let's keep it visible or hide strict.
+      href: "/my-library",
+      hidden: user.role === "admin", // Maybe admins also want to read? Let's keep it visible or hide strict.
     },
     {
-      label: 'Browse Books',
+      label: "Browse Books",
       icon: BookOpen,
-      href: '/browse',
+      href: "/browse",
     },
     {
-      label: 'Tutorials',
+      label: "Tutorials",
       icon: GraduationCap,
-      href: '/tutorials',
+      href: "/tutorials",
     },
   ];
 
   const adminRoutes = [
     {
-      label: 'Dashboard',
+      label: "Dashboard",
       icon: LayoutDashboard,
-      href: '/admin/dashboard',
+      href: "/admin/dashboard",
     },
     {
-      label: 'Manage Books',
+      label: "Manage Books",
       icon: BookOpen,
-      href: '/admin/books',
+      href: "/admin/books",
     },
     {
-      label: 'Manage Users',
+      label: "Manage Users",
       icon: UserIcon,
-      href: '/admin/users',
+      href: "/admin/users",
     },
     {
-        label: 'Manage Reviews',
-        icon: Settings, // or MessageSquare
-        href: '/admin/reviews'
-    }
+      label: "Manage Reviews",
+      icon: Settings, // or MessageSquare
+      href: "/admin/reviews",
+    },
   ];
 
-  const navRoutes = user.role === 'admin' ? adminRoutes : routes;
+  const navRoutes = user.role === "admin" ? adminRoutes : routes;
 
   return (
     <div className="flex flex-col h-full bg-card border-r">
       <div className="p-6">
-        <div className="flex items-center gap-2 font-bold text-2xl font-serif text-primary">
+        <Link
+          href="/"
+          className="flex items-center gap-2 font-bold text-2xl font-serif text-primary"
+        >
           <BookOpen className="h-8 w-8" />
           <span>BookWorm</span>
-        </div>
+        </Link>
       </div>
       <ScrollArea className="flex-1 px-4">
         <div className="space-y-2">
           {navRoutes.map((route) => (
             <Button
               key={route.href}
-              variant={pathname === route.href ? 'secondary' : 'ghost'}
+              variant={pathname === route.href ? "secondary" : "ghost"}
               className={cn(
-                'w-full justify-start gap-3',
-                pathname === route.href && 'bg-secondary/50'
+                "w-full justify-start gap-3",
+                pathname === route.href && "bg-secondary/50"
               )}
               asChild
             >
@@ -120,10 +131,16 @@ export function Sidebar({ user }: SidebarProps) {
           </Avatar>
           <div className="overflow-hidden">
             <p className="text-sm font-medium truncate">{user.name}</p>
-            <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+            <p className="text-xs text-muted-foreground truncate">
+              {user.email}
+            </p>
           </div>
         </div>
-        <Button variant="outline" className="w-full justify-start gap-2" onClick={handleLogout}>
+        <Button
+          variant="outline"
+          className="w-full justify-start gap-2"
+          onClick={handleLogout}
+        >
           <LogOut className="h-4 w-4" />
           Logout
         </Button>
