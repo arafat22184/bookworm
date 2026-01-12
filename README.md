@@ -58,6 +58,12 @@ BookWorm is a comprehensive book management platform that combines social readin
    CLOUDINARY_API_KEY=your_api_key
    CLOUDINARY_API_SECRET=your_api_secret
    ```
+   
+   **Important:** Create an upload preset named `bookworm_preset` in your Cloudinary dashboard:
+   - Go to Settings → Upload → Upload presets
+   - Create a new unsigned preset named `bookworm_preset`
+   - Set folder to `bookworm` (optional)
+   - Enable unsigned uploading
 
 4. **Run the development server**
    ```bash

@@ -8,6 +8,7 @@ export const registerSchema = z.object({
     .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
     .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
     .regex(/[0-9]/, 'Password must contain at least one number'),
+  image: z.string().url('Please upload a profile picture').min(1, 'Profile picture is required'),
 });
 
 export const loginSchema = z.object({
