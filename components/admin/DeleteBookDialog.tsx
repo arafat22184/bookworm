@@ -56,7 +56,7 @@ export function DeleteBookDialog({ bookId, bookTitle }: DeleteBookDialogProps) {
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete 
-            <span className="font-semibold"> "{bookTitle}" </span>
+            <span className="font-semibold"> &quot;{bookTitle}&quot; </span>
             and remove it from our servers.
           </AlertDialogDescription>
         </AlertDialogHeader>
