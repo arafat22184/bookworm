@@ -10,7 +10,6 @@ import { useAuth } from "@/hooks/useAuth";
 import React from "react";
 
 export function Navbar() {
-  const { isAuthenticated, isLoading, logout: handleLogout } = useAuth();
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
@@ -30,68 +29,6 @@ export function Navbar() {
       document.body.style.overflow = "unset";
     };
   }, [isMobileMenuOpen]);
-
-  // Auth buttons component to avoid duplication
-  const AuthButtons = ({ mobile = false }: { mobile?: boolean }) => (
-    <>
-      {isLoading ? (
-        <div className={`flex gap-4 ${mobile ? "flex-col w-full" : ""}`}>
-          <div className="w-20 h-10 bg-muted/20 animate-pulse rounded-md" />
-          <div className="w-28 h-10 bg-muted/20 animate-pulse rounded-full" />
-        </div>
-      ) : isAuthenticated ? (
-        <div className={`flex gap-4 ${mobile ? "flex-col w-full" : ""}`}>
-          <Link href="/dashboard" className={mobile ? "w-full" : ""}>
-            <ScaleOnHover>
-              <Button
-                className={`font-medium shadow-xl shadow-primary/20 hover:shadow-2xl hover:shadow-primary/30 transition-all rounded-full px-6 ${
-                  mobile ? "w-full h-12 text-lg" : ""
-                }`}
-              >
-                Dashboard
-              </Button>
-            </ScaleOnHover>
-          </Link>
-          <Button
-            variant="ghost"
-            className={`font-medium hover:bg-red-500 hover:text-white ${
-              mobile ? "w-full h-12 text-lg text-red-500 hover:bg-red-50" : ""
-            }`}
-            onClick={() => {
-              handleLogout();
-              if (mobile) setIsMobileMenuOpen(false);
-            }}
-          >
-            Logout
-          </Button>
-        </div>
-      ) : (
-        <div className={`flex gap-4 ${mobile ? "flex-col w-full" : ""}`}>
-          <Link href="/login" className={mobile ? "w-full" : ""}>
-            <Button
-              variant="ghost"
-              className={`font-medium hover:bg-primary/5 hover:text-primary ${
-                mobile ? "w-full h-12 text-lg border-2" : ""
-              }`}
-            >
-              Sign In
-            </Button>
-          </Link>
-          <Link href="/register" className={mobile ? "w-full" : ""}>
-            <ScaleOnHover>
-              <Button
-                className={`font-medium shadow-xl shadow-primary/20 hover:shadow-2xl hover:shadow-primary/30 transition-all rounded-full px-6 ${
-                  mobile ? "w-full h-12 text-lg" : ""
-                }`}
-              >
-                Get Started
-              </Button>
-            </ScaleOnHover>
-          </Link>
-        </div>
-      )}
-    </>
-  );
 
   return (
     <>
@@ -186,7 +123,10 @@ export function Navbar() {
             </nav>
 
             <div className="w-full max-w-sm mx-auto space-y-6 border-t border-border/50 pt-8">
-              <AuthButtons mobile />
+              <AuthButtons
+                mobile
+                onCloseMobileMenu={() => setIsMobileMenuOpen(false)}
+              />
             </div>
           </motion.div>
         )}
@@ -194,3 +134,74 @@ export function Navbar() {
     </>
   );
 }
+
+const AuthButtons = ({
+  mobile = false,
+  onCloseMobileMenu,
+}: {
+  mobile?: boolean;
+  onCloseMobileMenu?: () => void;
+}) => {
+  const { isAuthenticated, isLoading, logout: handleLogout } = useAuth();
+
+  return (
+    <>
+      {isLoading ? (
+        <div className={`flex gap-4 ${mobile ? "flex-col w-full" : ""}`}>
+          <div className="w-20 h-10 bg-muted/20 animate-pulse rounded-md" />
+          <div className="w-28 h-10 bg-muted/20 animate-pulse rounded-full" />
+        </div>
+      ) : isAuthenticated ? (
+        <div className={`flex gap-4 ${mobile ? "flex-col w-full" : ""}`}>
+          <Link href="/dashboard" className={mobile ? "w-full" : ""}>
+            <ScaleOnHover>
+              <Button
+                className={`font-medium shadow-xl shadow-primary/20 hover:shadow-2xl hover:shadow-primary/30 transition-all rounded-full px-6 ${
+                  mobile ? "w-full h-12 text-lg" : ""
+                }`}
+              >
+                Dashboard
+              </Button>
+            </ScaleOnHover>
+          </Link>
+          <Button
+            variant="ghost"
+            className={`font-medium hover:bg-red-500 hover:text-white ${
+              mobile ? "w-full h-12 text-lg text-red-500 hover:bg-red-50" : ""
+            }`}
+            onClick={() => {
+              handleLogout();
+              if (mobile && onCloseMobileMenu) onCloseMobileMenu();
+            }}
+          >
+            Logout
+          </Button>
+        </div>
+      ) : (
+        <div className={`flex gap-4 ${mobile ? "flex-col w-full" : ""}`}>
+          <Link href="/login" className={mobile ? "w-full" : ""}>
+            <Button
+              variant="ghost"
+              className={`font-medium hover:bg-primary/5 hover:text-primary ${
+                mobile ? "w-full h-12 text-lg border-2" : ""
+              }`}
+            >
+              Sign In
+            </Button>
+          </Link>
+          <Link href="/register" className={mobile ? "w-full" : ""}>
+            <ScaleOnHover>
+              <Button
+                className={`font-medium shadow-xl shadow-primary/20 hover:shadow-2xl hover:shadow-primary/30 transition-all rounded-full px-6 ${
+                  mobile ? "w-full h-12 text-lg" : ""
+                }`}
+              >
+                Get Started
+              </Button>
+            </ScaleOnHover>
+          </Link>
+        </div>
+      )}
+    </>
+  );
+};
