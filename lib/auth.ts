@@ -1,76 +1,92 @@
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 import bcrypt from 'bcryptjs';
+import { JwtPayload } from './types';
 
-const ACCESS_SECRET = process.env.JWT_ACCESS_SECRET;
-const REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
-const JWT_SECRET = process.env.JWT_SECRET || ACCESS_SECRET || 'fallback-secret';
+const ACCESS_SECRET = process.env.JWT_ACCESS_SECRET!;
+const REFRESH_SECRET = process.env.JWT_REFRESH_SECRET!;
 
-if (!ACCESS_SECRET || !REFRESH_SECRET) {
+if (!process.env.JWT_ACCESS_SECRET || !process.env.JWT_REFRESH_SECRET) {
   throw new Error('JWT secrets must be defined in .env.local');
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const signAccessToken = (payload: any) => {
+/**
+ * Signs an access token with a short expiration time
+ * @param payload - JWT payload containing userId and role
+ * @returns Signed JWT access token
+ */
+export function signAccessToken(payload: Omit<JwtPayload, 'iat' | 'exp'>): string {
   return jwt.sign(payload, ACCESS_SECRET, { expiresIn: '15m' });
-};
+}
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const signRefreshToken = (payload: any) => {
+/**
+ * Signs a refresh token with a longer expiration time
+ * @param payload - JWT payload containing userId and role
+ * @returns Signed JWT refresh token
+ */
+export function signRefreshToken(payload: Omit<JwtPayload, 'iat' | 'exp'>): string {
   return jwt.sign(payload, REFRESH_SECRET, { expiresIn: '7d' });
-};
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function signToken(payload: any) {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: '7d' });
 }
 
-export const verifyAccessToken = (token: string) => {
+/**
+ * Verifies an access token
+ * @param token - The access token to verify
+ * @returns Decoded payload or null if invalid
+ */
+export function verifyAccessToken(token: string): JwtPayload | null {
   try {
-    return jwt.verify(token, ACCESS_SECRET);
-  } catch {
-    return null;
-  }
-};
-
-export const verifyRefreshToken = (token: string) => {
-  try {
-    return jwt.verify(token, REFRESH_SECRET);
-  } catch {
-    return null;
-  }
-};
-
-export function verifyToken(token: string) {
-  try {
-    return jwt.verify(token, JWT_SECRET);
+    const decoded = jwt.verify(token, ACCESS_SECRET);
+    return decoded as JwtPayload;
   } catch {
     return null;
   }
 }
 
-export async function hashPassword(password: string) {
+/**
+ * Verifies a refresh token
+ * @param token - The refresh token to verify
+ * @returns Decoded payload or null if invalid
+ */
+export function verifyRefreshToken(token: string): JwtPayload | null {
+  try {
+    const decoded = jwt.verify(token, REFRESH_SECRET);
+    return decoded as JwtPayload;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Hashes a password using bcrypt
+ * @param password - Plain text password
+ * @returns Hashed password
+ */
+export async function hashPassword(password: string): Promise<string> {
   return await bcrypt.hash(password, 10);
 }
 
-export async function comparePassword(password: string, hash: string) {
-  return await bcrypt.compare(password, hash);
+/**
+ * Compares a plain text password with a hashed password
+ * @param password - Plain text password
+ * @param hashedPassword - Hashed password to compare against
+ * @returns True if passwords match, false otherwise
+ */
+export async function comparePassword(
+  password: string,
+  hashedPassword: string
+): Promise<boolean> {
+  return await bcrypt.compare(password, hashedPassword);
 }
 
-export async function getSession() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get('token')?.value;
-
-  if (!token) return null;
-
-  try {
-    return verifyToken(token);
-  } catch {
-    return null;
-  }
-}
-
-export async function setAuthCookies(accessToken: string, refreshToken: string) {
+/**
+ * Sets authentication cookies for access and refresh tokens
+ * @param accessToken - The access token to store
+ * @param refreshToken - The refresh token to store
+ */
+export async function setAuthCookies(
+  accessToken: string,
+  refreshToken: string
+): Promise<void> {
   const cookieStore = await cookies();
 
   cookieStore.set('accessToken', accessToken, {
@@ -90,8 +106,12 @@ export async function setAuthCookies(accessToken: string, refreshToken: string) 
   });
 }
 
-export async function clearAuthCookies() {
+/**
+ * Clears authentication cookies
+ */
+export async function clearAuthCookies(): Promise<void> {
   const cookieStore = await cookies();
   cookieStore.delete('accessToken');
   cookieStore.delete('refreshToken');
 }
+
