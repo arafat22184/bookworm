@@ -64,7 +64,7 @@ export default function AdminTutorialsPage() {
             <Input
               value={videoUrl}
               onChange={(_e) => setVideoUrl(_e.target.value)}
-              placeholder="https://youtube.com/watch?v=..."
+              placeholder="https://www.youtube.com/embed/..."
               required
             />
           </div>

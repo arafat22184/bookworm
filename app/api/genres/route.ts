@@ -24,7 +24,18 @@ export async function POST(req: NextRequest) {
     await connectToDatabase();
     const body = await req.json();
 
-    const genre = await Genre.create(body);
+    if (!body.name) {
+      return errorResponse('Name is required', 400);
+    }
+
+    const slug = body.name
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/[\s_-]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+
+    const genre = await Genre.create({ ...body, slug });
 
     return successResponse({ genre }, 'Genre created successfully', 201);
   } catch (error) {
