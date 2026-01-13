@@ -27,17 +27,16 @@ export default async function TutorialsPage() {
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 lg:gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
         {tutorials.map((tutorial: any) => (
-          <Card key={tutorial._id} className="overflow-hidden">
+          <Card key={tutorial._id} className="overflow-hidden pt-0">
             <div className="aspect-video w-full">
               <iframe
                 width="100%"
                 height="100%"
                 src={tutorial.videoUrl.replace("watch?v=", "embed/")}
                 title={tutorial.title}
-                frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               />

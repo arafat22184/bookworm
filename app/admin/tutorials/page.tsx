@@ -4,8 +4,9 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { Loader2, Plus, Trash2 } from "lucide-react";
+import { Loader2, Plus } from "lucide-react";
 import { toast } from "sonner";
+import { DeleteTutorialDialog } from "@/components/admin/DeleteTutorialDialog";
 
 export default function AdminTutorialsPage() {
   // const router = useRouter();
@@ -76,40 +77,41 @@ export default function AdminTutorialsPage() {
         </form>
       </Card>
 
-      <div className="grid gap-4">
+      <div className="grid gap-4 lg:gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {tutorials.map((t) => (
-          <div
-            key={t._id}
-            className="flex items-center justify-between p-4 border rounded-md"
-          >
-            <div>
-              <p className="font-bold">{t.title}</p>
-              <p className="text-sm text-muted-foreground">{t.videoUrl}</p>
-            </div>
-            <Button
-              variant="destructive"
-              size="sm"
-              onClick={async () => {
-                if (!confirm("Are you sure?")) return;
-                try {
-                  const res = await fetch(`/api/tutorials?id=${t._id}`, {
-                    method: "DELETE",
-                  });
-                  if (res.ok) {
-                    toast.success("Tutorial deleted");
-                    setTutorials(tutorials.filter((x) => x._id !== t._id));
-                  } else {
-                    toast.error("Failed to delete");
+          <Card key={t._id} className="overflow-hidden flex flex-col pt-0">
+            <div className="aspect-video w-full relative group">
+              <iframe
+                width="100%"
+                height="100%"
+                src={t.videoUrl.replace("watch?v=", "embed/")}
+                title={t.title}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+              <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <DeleteTutorialDialog
+                  tutorialId={t._id}
+                  tutorialTitle={t.title}
+                  onDelete={() =>
+                    setTutorials(tutorials.filter((x) => x._id !== t._id))
                   }
-                } catch {
-                  toast.error("Error deleting tutorial");
-                }
-              }}
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
-          </div>
+                />
+              </div>
+            </div>
+            <div className="p-4">
+              <h3 className="font-semibold line-clamp-1">{t.title}</h3>
+              <p className="text-xs text-muted-foreground mt-1 truncate">
+                {t.videoUrl}
+              </p>
+            </div>
+          </Card>
         ))}
+        {tutorials.length === 0 && (
+          <p className="col-span-full text-center text-muted-foreground">
+            No tutorials added yet.
+          </p>
+        )}
       </div>
     </div>
   );

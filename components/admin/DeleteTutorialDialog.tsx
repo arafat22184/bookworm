@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
   AlertDialog,
@@ -15,40 +14,46 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Trash } from "lucide-react";
+import { Trash2 } from "lucide-react";
 
-interface DeleteBookDialogProps {
-  bookId: string;
-  bookTitle: string;
+interface DeleteTutorialDialogProps {
+  tutorialId: string;
+  tutorialTitle: string;
+  onDelete: () => void;
 }
 
-export function DeleteBookDialog({ bookId, bookTitle }: DeleteBookDialogProps) {
-  const router = useRouter();
+export function DeleteTutorialDialog({
+  tutorialId,
+  tutorialTitle,
+  onDelete,
+}: DeleteTutorialDialogProps) {
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleDelete = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/books/${bookId}`, {
+      const res = await fetch(`/api/tutorials?id=${tutorialId}`, {
         method: "DELETE",
       });
 
-      if (!res.ok) throw new Error("Failed to delete book");
+      if (!res.ok) throw new Error("Failed to delete tutorial");
 
-      toast.success("Book deleted successfully");
-      router.refresh();
+      toast.success("Tutorial deleted successfully");
+      setOpen(false);
+      onDelete();
     } catch {
-      toast.error("Failed to delete book");
+      toast.error("Failed to delete tutorial");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <AlertDialog>
+    <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant="ghost" size="icon" className="text-destructive">
-          <Trash className="h-4 w-4" />
+        <Button variant="destructive" size="icon" className="h-8 w-8 shadow-sm">
+          <Trash2 className="h-4 w-4" />
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent
@@ -59,7 +64,7 @@ export function DeleteBookDialog({ bookId, bookTitle }: DeleteBookDialogProps) {
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete
-            <span className="font-semibold"> &quot;{bookTitle}&quot; </span>
+            <span className="font-semibold"> &quot;{tutorialTitle}&quot; </span>
             and remove it from our servers.
           </AlertDialogDescription>
         </AlertDialogHeader>
