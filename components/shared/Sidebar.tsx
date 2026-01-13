@@ -95,6 +95,11 @@ export function Sidebar({ user }: SidebarProps) {
       href: "/admin/reviews",
     },
     {
+      label: "Manage Tutorials",
+      icon: GraduationCap,
+      href: "/admin/tutorials",
+    },
+    {
       label: "Profile",
       icon: Settings,
       href: "/profile",
