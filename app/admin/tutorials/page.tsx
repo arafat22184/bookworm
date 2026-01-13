@@ -77,16 +77,15 @@ export default function AdminTutorialsPage() {
         </form>
       </Card>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 lg:gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {tutorials.map((t) => (
-          <Card key={t._id} className="overflow-hidden flex flex-col">
+          <Card key={t._id} className="overflow-hidden flex flex-col pt-0">
             <div className="aspect-video w-full relative group">
               <iframe
                 width="100%"
                 height="100%"
                 src={t.videoUrl.replace("watch?v=", "embed/")}
                 title={t.title}
-                frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               />
