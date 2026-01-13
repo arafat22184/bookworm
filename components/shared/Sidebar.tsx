@@ -119,7 +119,11 @@ export function Sidebar({ user }: SidebarProps) {
           <span>BookWorm</span>
         </Link>
       </div>
-      <ScrollArea className="flex-1 px-4">
+      <ScrollArea
+        className="flex-1 px-4"
+        onWheel={(e) => e.stopPropagation()}
+        onTouchMove={(e) => e.stopPropagation()}
+      >
         <div className="space-y-2">
           {navRoutes.map((route) => (
             <Button

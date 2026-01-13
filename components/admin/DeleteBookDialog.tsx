@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,9 +13,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
-import { Trash } from 'lucide-react';
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { Trash } from "lucide-react";
 
 interface DeleteBookDialogProps {
   bookId: string;
@@ -30,15 +30,15 @@ export function DeleteBookDialog({ bookId, bookTitle }: DeleteBookDialogProps) {
     setLoading(true);
     try {
       const res = await fetch(`/api/books/${bookId}`, {
-        method: 'DELETE',
+        method: "DELETE",
       });
 
-      if (!res.ok) throw new Error('Failed to delete book');
+      if (!res.ok) throw new Error("Failed to delete book");
 
-      toast.success('Book deleted successfully');
+      toast.success("Book deleted successfully");
       router.refresh();
     } catch {
-      toast.error('Failed to delete book');
+      toast.error("Failed to delete book");
     } finally {
       setLoading(false);
     }
@@ -51,23 +51,26 @@ export function DeleteBookDialog({ bookId, bookTitle }: DeleteBookDialogProps) {
           <Trash className="h-4 w-4" />
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent>
+      <AlertDialogContent
+        onWheel={(e) => e.stopPropagation()}
+        onTouchMove={(e) => e.stopPropagation()}
+      >
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete 
+            This action cannot be undone. This will permanently delete
             <span className="font-semibold"> &quot;{bookTitle}&quot; </span>
             and remove it from our servers.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel disabled={loading}>Cancel</AlertDialogCancel>
-          <AlertDialogAction 
-            onClick={handleDelete} 
+          <AlertDialogAction
+            onClick={handleDelete}
             className="bg-destructive hover:bg-destructive/90"
             disabled={loading}
           >
-            {loading ? 'Deleting...' : 'Delete'}
+            {loading ? "Deleting..." : "Delete"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

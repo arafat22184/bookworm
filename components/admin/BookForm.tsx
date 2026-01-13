@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { Button } from '@/components/ui/button';
+import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -12,20 +12,20 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { ImageUpload } from '@/components/shared/ImageUpload';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Loader2 } from 'lucide-react';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { ImageUpload } from "@/components/shared/ImageUpload";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Loader2 } from "lucide-react";
 
 const bookSchema = z.object({
-  title: z.string().min(1, 'Title is required'),
-  author: z.string().min(1, 'Author is required'),
-  description: z.string().min(10, 'Description needs to be longer'),
-  coverImage: z.string().min(1, 'Cover image is required'),
-  genres: z.array(z.string()).min(1, 'Select at least one genre'),
+  title: z.string().min(1, "Title is required"),
+  author: z.string().min(1, "Author is required"),
+  description: z.string().min(10, "Description needs to be longer"),
+  coverImage: z.string().min(1, "Cover image is required"),
+  genres: z.array(z.string()).min(1, "Select at least one genre"),
 });
 
 export type BookFormValues = z.infer<typeof bookSchema>;
@@ -36,25 +36,29 @@ interface BookFormProps {
   submitLabel?: string;
 }
 
-export function BookForm({ initialData, onSubmit, submitLabel = 'Create Book' }: BookFormProps) {
+export function BookForm({
+  initialData,
+  onSubmit,
+  submitLabel = "Create Book",
+}: BookFormProps) {
   const [loading, setLoading] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [genres, setGenres] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch('/api/genres')
-      .then(res => res.json())
-      .then(data => setGenres(data.data.genres))
-      .catch(err => console.error(err));
+    fetch("/api/genres")
+      .then((res) => res.json())
+      .then((data) => setGenres(data.data.genres))
+      .catch((err) => console.error(err));
   }, []);
 
   const form = useForm<BookFormValues>({
     resolver: zodResolver(bookSchema),
     defaultValues: initialData || {
-      title: '',
-      author: '',
-      description: '',
-      coverImage: '',
+      title: "",
+      author: "",
+      description: "",
+      coverImage: "",
       genres: [],
     },
   });
@@ -79,10 +83,10 @@ export function BookForm({ initialData, onSubmit, submitLabel = 'Create Book' }:
             <FormItem>
               <FormLabel>Cover Image</FormLabel>
               <FormControl>
-                <ImageUpload 
-                    value={field.value ? [field.value] : []} 
-                    onChange={(url) => field.onChange(url)}
-                    onRemove={() => field.onChange('')}
+                <ImageUpload
+                  value={field.value ? [field.value] : []}
+                  onChange={(url) => field.onChange(url)}
+                  onRemove={() => field.onChange("")}
                 />
               </FormControl>
               <FormMessage />
@@ -90,32 +94,40 @@ export function BookForm({ initialData, onSubmit, submitLabel = 'Create Book' }:
           )}
         />
         <div className="grid grid-cols-2 gap-4">
-            <FormField
+          <FormField
             control={form.control}
             name="title"
             render={({ field }) => (
-                <FormItem>
+              <FormItem>
                 <FormLabel>Title</FormLabel>
                 <FormControl>
-                    <Input disabled={loading} placeholder="Book Title" {...field} />
+                  <Input
+                    disabled={loading}
+                    placeholder="Book Title"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
-                </FormItem>
+              </FormItem>
             )}
-            />
-            <FormField
+          />
+          <FormField
             control={form.control}
             name="author"
             render={({ field }) => (
-                <FormItem>
+              <FormItem>
                 <FormLabel>Author</FormLabel>
                 <FormControl>
-                    <Input disabled={loading} placeholder="Author Name" {...field} />
+                  <Input
+                    disabled={loading}
+                    placeholder="Author Name"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
-                </FormItem>
+              </FormItem>
             )}
-            />
+          />
         </div>
         <FormField
           control={form.control}
@@ -124,7 +136,11 @@ export function BookForm({ initialData, onSubmit, submitLabel = 'Create Book' }:
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea disabled={loading} placeholder="Book description..." {...field} />
+                <Textarea
+                  disabled={loading}
+                  placeholder="Book description..."
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -136,39 +152,43 @@ export function BookForm({ initialData, onSubmit, submitLabel = 'Create Book' }:
           render={() => (
             <FormItem>
               <FormLabel>Genres</FormLabel>
-              <ScrollArea className="h-24 w-full rounded-md border p-4">
+              <ScrollArea
+                className="h-36 w-full rounded-md border p-4"
+                onWheel={(e) => e.stopPropagation()}
+                onTouchMove={(e) => e.stopPropagation()}
+              >
                 <div className="flex flex-wrap gap-4">
-                    {genres.map((genre) => (
-                        <FormField
-                            key={genre._id}
-                            control={form.control}
-                            name="genres"
-                            render={({ field }) => (
-                                <FormItem
-                                    key={genre._id}
-                                    className="flex flex-row items-start space-x-3 space-y-0"
-                                >
-                                    <FormControl>
-                                    <Checkbox
-                                        checked={field.value?.includes(genre._id)}
-                                        onCheckedChange={(checked) => {
-                                        return checked
-                                            ? field.onChange([...field.value, genre._id])
-                                            : field.onChange(
-                                                field.value?.filter(
-                                                    (value) => value !== genre._id
-                                                )
-                                            )
-                                        }}
-                                    />
-                                    </FormControl>
-                                    <FormLabel className="font-normal">
-                                    {genre.name}
-                                    </FormLabel>
-                                </FormItem>
-                            )}
-                        />
-                    ))}
+                  {genres.map((genre) => (
+                    <FormField
+                      key={genre._id}
+                      control={form.control}
+                      name="genres"
+                      render={({ field }) => (
+                        <FormItem
+                          key={genre._id}
+                          className="flex flex-row items-start space-x-3 space-y-0"
+                        >
+                          <FormControl>
+                            <Checkbox
+                              checked={field.value?.includes(genre._id)}
+                              onCheckedChange={(checked) => {
+                                return checked
+                                  ? field.onChange([...field.value, genre._id])
+                                  : field.onChange(
+                                      field.value?.filter(
+                                        (value) => value !== genre._id
+                                      )
+                                    );
+                              }}
+                            />
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            {genre.name}
+                          </FormLabel>
+                        </FormItem>
+                      )}
+                    />
+                  ))}
                 </div>
               </ScrollArea>
               <FormMessage />
@@ -176,10 +196,10 @@ export function BookForm({ initialData, onSubmit, submitLabel = 'Create Book' }:
           )}
         />
         <div className="flex justify-end">
-            <Button disabled={loading} type="submit">
-                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                {submitLabel}
-            </Button>
+          <Button disabled={loading} type="submit">
+            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {submitLabel}
+          </Button>
         </div>
       </form>
     </Form>

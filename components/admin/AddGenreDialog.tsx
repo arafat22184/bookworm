@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { toast } from 'sonner';
-import { Button } from '@/components/ui/button';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -14,7 +14,7 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogFooter,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -22,12 +22,12 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Loader2, Plus } from 'lucide-react';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Loader2, Plus } from "lucide-react";
 
 const genreSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
+  name: z.string().min(1, "Name is required"),
 });
 
 type GenreFormValues = z.infer<typeof genreSchema>;
@@ -40,22 +40,22 @@ export function AddGenreDialog() {
   const form = useForm<GenreFormValues>({
     resolver: zodResolver(genreSchema),
     defaultValues: {
-      name: '',
+      name: "",
     },
   });
 
   const onSubmit = async (data: GenreFormValues) => {
     setLoading(true);
     try {
-      const res = await fetch('/api/genres', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/genres", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
 
-      if (!res.ok) throw new Error('Failed to create genre');
+      if (!res.ok) throw new Error("Failed to create genre");
 
-      toast.success('Genre created');
+      toast.success("Genre created");
       setOpen(false);
       form.reset();
       router.refresh();
@@ -63,7 +63,7 @@ export function AddGenreDialog() {
       // Ideally we trigger SWR revalid or just simple window reload or router refresh logic which might not re-fetch existing component useEffect.
       // But for admin usage, it's fine.
     } catch {
-      toast.error('Failed to add genre');
+      toast.error("Failed to add genre");
     } finally {
       setLoading(false);
     }
@@ -77,7 +77,10 @@ export function AddGenreDialog() {
           Add Genre
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent
+        onWheel={(e) => e.stopPropagation()}
+        onTouchMove={(e) => e.stopPropagation()}
+      >
         <DialogHeader>
           <DialogTitle>Add New Genre</DialogTitle>
         </DialogHeader>

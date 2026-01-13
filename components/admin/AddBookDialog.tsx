@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
-import { Button } from '@/components/ui/button';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -11,9 +11,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { Plus } from 'lucide-react';
-import { BookForm, BookFormValues } from './BookForm';
+} from "@/components/ui/dialog";
+import { Plus } from "lucide-react";
+import { BookForm, BookFormValues } from "./BookForm";
 
 export function AddBookDialog() {
   const router = useRouter();
@@ -21,19 +21,19 @@ export function AddBookDialog() {
 
   const onSubmit = async (data: BookFormValues) => {
     try {
-      const res = await fetch('/api/books', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/books", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
 
-      if (!res.ok) throw new Error('Failed to create book');
+      if (!res.ok) throw new Error("Failed to create book");
 
-      toast.success('Book created successfully');
+      toast.success("Book created successfully");
       setOpen(false);
       router.refresh();
     } catch {
-      toast.error('Failed to create book');
+      toast.error("Failed to create book");
     }
   };
 
@@ -45,7 +45,11 @@ export function AddBookDialog() {
           Add Book
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent
+        onWheel={(e) => e.stopPropagation()}
+        onTouchMove={(e) => e.stopPropagation()}
+        className="max-w-2xl max-h-[90vh] overflow-y-auto"
+      >
         <DialogHeader>
           <DialogTitle>Add New Book</DialogTitle>
           <DialogDescription>

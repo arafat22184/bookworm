@@ -18,7 +18,12 @@ export function Navbar({ user }: { user: any }) {
             <Menu className="h-6 w-6" />
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="p-0 w-72">
+        <SheetContent
+          side="left"
+          className="p-0 w-72"
+          onWheel={(e) => e.stopPropagation()}
+          onTouchMove={(e) => e.stopPropagation()}
+        >
           {/* Close sheet on click by passing a wrapper or just relying on link clicks if we optimized Sidebar */}
           <Sidebar user={user} />
         </SheetContent>
