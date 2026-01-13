@@ -31,3 +31,31 @@ export async function POST(req: NextRequest) {
     return handleApiError(error);
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const user = await getCurrentUser();
+    if (!user || user.role !== 'admin') {
+      return errorResponse('Unauthorized', 403);
+    }
+
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+        return errorResponse('Missing tutorial ID', 400);
+    }
+
+    await connectToDatabase();
+    
+    const deletedTutorial = await Tutorial.findByIdAndDelete(id);
+
+    if (!deletedTutorial) {
+        return errorResponse('Tutorial not found', 404);
+    }
+
+    return successResponse({ id }, 'Tutorial deleted successfully');
+  } catch (error) {
+    return handleApiError(error);
+  }
+}
