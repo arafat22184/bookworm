@@ -1,10 +1,10 @@
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function BookCardSkeleton() {
   return (
     <Card className="h-full overflow-hidden">
-      <div className="aspect-[2/3] relative overflow-hidden bg-muted">
+      <div className="aspect-2/3 relative overflow-hidden bg-muted">
         <Skeleton className="w-full h-full" />
       </div>
       <CardContent className="p-4 space-y-2">
