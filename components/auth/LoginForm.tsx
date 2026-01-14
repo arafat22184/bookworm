@@ -53,12 +53,8 @@ export function LoginForm() {
 
       toast.success(result.message);
 
-      // Redirect based on role
-      if (result.user?.role === "admin") {
-        router.push("/admin/dashboard");
-      } else {
-        router.push("/my-library");
-      }
+      // Redirect to landing page
+      router.push("/");
       router.refresh();
     });
   }

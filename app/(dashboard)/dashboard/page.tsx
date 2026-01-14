@@ -18,7 +18,6 @@ export default async function UserDashboardPage() {
 
   await connectToDatabase();
   const user = await User.findById(userSession.id).lean();
-
   // Stats
   const userShelves = await Shelf.find({ user: userSession.id });
   const readBooks = userShelves.filter((shelf) => shelf.status === "read");
@@ -57,8 +56,15 @@ export default async function UserDashboardPage() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {user && user.challenge && (
-          <ReadingChallenge challenge={user.challenge} />
+        {user && (
+          <ReadingChallenge
+            challenge={{
+              ...user.challenge,
+              current: totalBooksRead,
+              goal: user.challenge?.goal || 0,
+              year: user.challenge?.year || new Date().getFullYear(),
+            }}
+          />
         )}
 
         <Card>
