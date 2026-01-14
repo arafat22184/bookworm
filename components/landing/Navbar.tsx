@@ -142,7 +142,10 @@ const AuthButtons = ({
   mobile?: boolean;
   onCloseMobileMenu?: () => void;
 }) => {
-  const { isAuthenticated, isLoading, logout: handleLogout } = useAuth();
+  const { isAuthenticated, isLoading, logout: handleLogout, user } = useAuth();
+
+  const dashboardLink =
+    user?.role === "admin" ? "/admin/dashboard" : "/dashboard";
 
   return (
     <>
@@ -153,7 +156,7 @@ const AuthButtons = ({
         </div>
       ) : isAuthenticated ? (
         <div className={`flex gap-4 ${mobile ? "flex-col w-full" : ""}`}>
-          <Link href="/dashboard" className={mobile ? "w-full" : ""}>
+          <Link href={dashboardLink} className={mobile ? "w-full" : ""}>
             <ScaleOnHover>
               <Button
                 className={`font-medium shadow-xl shadow-primary/20 hover:shadow-2xl hover:shadow-primary/30 transition-all rounded-full px-6 ${

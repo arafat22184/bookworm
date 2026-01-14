@@ -59,7 +59,7 @@ export function RegisterForm() {
       }
 
       toast.success(result.message);
-      router.push("/my-library");
+      router.push("/");
       router.refresh();
     });
   }
