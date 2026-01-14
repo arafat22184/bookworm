@@ -6,17 +6,18 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
+import { SerializedTutorial } from "@/lib/types";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const serialize = (obj: any) => JSON.parse(JSON.stringify(obj));
+const serialize = <T,>(obj: T): T => JSON.parse(JSON.stringify(obj));
 
 export const revalidate = 3600; // Revalidate every hour
-// Removed force-static to prevent auth issues
 
 export default async function TutorialsPage() {
   await connectToDatabase();
   const rawTutorials = await Tutorial.find().sort({ createdAt: -1 });
-  const tutorials = serialize(rawTutorials);
+  const tutorials: SerializedTutorial[] = serialize(
+    rawTutorials
+  ) as unknown as SerializedTutorial[];
 
   return (
     <div className="space-y-6">
@@ -28,8 +29,7 @@ export default async function TutorialsPage() {
       </div>
 
       <div className="grid gap-4 lg:gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-        {tutorials.map((tutorial: any) => (
+        {tutorials.map((tutorial: SerializedTutorial) => (
           <Card key={tutorial._id} className="overflow-hidden pt-0">
             <div className="aspect-video w-full">
               <iframe

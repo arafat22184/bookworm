@@ -2,6 +2,7 @@ import { getCurrentUser } from '@/lib/session';
 import connectToDatabase from '@/lib/db';
 import Book from '@/lib/models/Book';
 import { successResponse, handleApiError, errorResponse } from '@/lib/api-utils';
+import { SerializedBook, SerializedGenre } from '@/lib/types';
 
 export async function GET() {
   try {
@@ -11,13 +12,11 @@ export async function GET() {
     await connectToDatabase();
 
     // Books per Genre
-    const books = await Book.find().populate('genres');
+    const books: SerializedBook[] = (await Book.find().populate('genres')) as any;
     const genreMap: Record<string, number> = {};
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    books.forEach((b: any) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      b.genres.forEach((g: any) => {
+    books.forEach((b: SerializedBook) => {
+      b.genres.forEach((g: SerializedGenre) => {
         genreMap[g.name] = (genreMap[g.name] || 0) + 1;
       });
     });

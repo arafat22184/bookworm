@@ -17,12 +17,11 @@ import { BookForm, BookFormValues } from "./BookForm";
 
 interface Book extends BookFormValues {
   _id: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   match?: any; // To handle any potential type mismatch from parent
 }
 
 interface EditBookDialogProps {
-  book: Book;
+  book: any;
 }
 
 export function EditBookDialog({ book }: EditBookDialogProps) {
@@ -32,7 +31,6 @@ export function EditBookDialog({ book }: EditBookDialogProps) {
   // Transform book genres from objects to array of IDs if necessary
   const initialData: BookFormValues = {
     ...book,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     genres: book.genres.map((g: any) => (typeof g === "string" ? g : g._id)),
   };
 

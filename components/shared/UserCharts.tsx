@@ -16,9 +16,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
 
 interface UserData {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   genreData?: any[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   monthlyData?: any[];
 }
 
@@ -45,7 +43,6 @@ export function UserCharts({ data }: { data: UserData }) {
                   outerRadius={100}
                   fill="#8884d8"
                   dataKey="value"
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   label={({ name, percent }: any) => `${name} ${((percent || 0) * 100).toFixed(0)}%`}
                 >
                   {genreData.map((entry, index) => (

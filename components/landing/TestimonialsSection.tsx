@@ -50,7 +50,6 @@ async function getTestimonials() {
   try {
     await connectToDatabase();
     // Ensure User model is registered before population
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const _ = User;
 
     const reviews = await Review.find({ rating: 5 })
@@ -61,16 +60,12 @@ async function getTestimonials() {
 
     if (!reviews) return [];
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return reviews.map((review: any) => ({
       quote: review.comment,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       author: (review.user as any)?.name || "Anonymous Reader",
       role: "Verified Reader",
       imageId:
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (review.user as any)?._id?.toString() || Math.random().toString(),
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       userImage: (review.user as any)?.image,
     }));
   } catch (error) {

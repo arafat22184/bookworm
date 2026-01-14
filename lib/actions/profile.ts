@@ -7,9 +7,6 @@ import User from '@/lib/models/User';
 import { getCurrentUser } from '@/lib/session';
 import { updateProfileSchema, changePasswordSchema } from '@/lib/validations/profile';
 
-/**
- * Server Action: Update user profile
- */
 export async function updateProfile(formData: FormData) {
   try {
     const user = await getCurrentUser();
@@ -23,13 +20,11 @@ export async function updateProfile(formData: FormData) {
 
     await connectToDatabase();
 
-    // Extract form data
     const data = {
       name: formData.get('name') as string,
       image: formData.get('image') as string,
     };
 
-    // Validate with Zod
     const result = updateProfileSchema.safeParse(data);
 
     if (!result.success) {
@@ -40,12 +35,10 @@ export async function updateProfile(formData: FormData) {
       };
     }
 
-    // Build update object with only provided fields
     const updateData: { name?: string; image?: string } = {};
     if (result.data.name) updateData.name = result.data.name;
     if (result.data.image) updateData.image = result.data.image;
 
-    // Update user in database
     const updatedUser = await User.findByIdAndUpdate(
       user.id,
       { $set: updateData },
@@ -59,7 +52,6 @@ export async function updateProfile(formData: FormData) {
       };
     }
 
-    // Revalidate profile page
     revalidatePath('/profile');
 
     return {
@@ -82,9 +74,6 @@ export async function updateProfile(formData: FormData) {
   }
 }
 
-/**
- * Server Action: Change user password
- */
 export async function updatePassword(formData: FormData) {
   try {
     const user = await getCurrentUser();
@@ -98,14 +87,12 @@ export async function updatePassword(formData: FormData) {
 
     await connectToDatabase();
 
-    // Extract form data
     const data = {
       currentPassword: formData.get('currentPassword') as string,
       newPassword: formData.get('newPassword') as string,
       confirmPassword: formData.get('confirmPassword') as string,
     };
 
-    // Validate with Zod
     const result = changePasswordSchema.safeParse(data);
 
     if (!result.success) {
@@ -116,7 +103,6 @@ export async function updatePassword(formData: FormData) {
       };
     }
 
-    // Find user with password
     const dbUser = await User.findById(user.id);
 
     if (!dbUser) {
@@ -126,7 +112,6 @@ export async function updatePassword(formData: FormData) {
       };
     }
 
-    // Verify current password
     const isMatch = await bcrypt.compare(result.data.currentPassword, dbUser.password!);
 
     if (!isMatch) {
@@ -136,10 +121,8 @@ export async function updatePassword(formData: FormData) {
       };
     }
 
-    // Hash new password
     const hashedPassword = await bcrypt.hash(result.data.newPassword, 10);
 
-    // Update password
     await User.findByIdAndUpdate(user.id, { password: hashedPassword });
 
     return {

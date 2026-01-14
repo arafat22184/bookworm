@@ -1,6 +1,5 @@
-
-import connectToDatabase from '@/lib/db';
-import Review from '@/lib/models/Review';
+import connectToDatabase from "@/lib/db";
+import Review from "@/lib/models/Review";
 import {
   Table,
   TableBody,
@@ -8,20 +7,20 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { ReviewActions } from '@/components/admin/ReviewActions';
+} from "@/components/ui/table";
+import { ReviewActions } from "@/components/admin/ReviewActions";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const serialize = (obj: any) => JSON.parse(JSON.stringify(obj));
+const serialize = <T extends unknown>(obj: T): T =>
+  JSON.parse(JSON.stringify(obj));
 
 export default async function AdminReviewsPage() {
   await connectToDatabase();
-  const rawReviews = await Review.find({ status: 'pending' })
-    .populate('user', 'name')
-    .populate('book', 'title')
+  const rawReviews = await Review.find({ status: "pending" })
+    .populate("user", "name")
+    .populate("book", "title")
     .sort({ createdAt: -1 });
-    
-  const reviews = serialize(rawReviews);
+
+  const reviews: any[] = serialize(rawReviews);
 
   return (
     <div className="space-y-6">
@@ -38,25 +37,31 @@ export default async function AdminReviewsPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             {reviews.map((review: any) => (
               <TableRow key={review._id}>
-                <TableCell className="font-medium">{review.book.title}</TableCell>
+                <TableCell className="font-medium">
+                  {review.book.title}
+                </TableCell>
                 <TableCell>{review.user.name}</TableCell>
                 <TableCell>{review.rating}/5</TableCell>
-                <TableCell className="max-w-xs truncate" title={review.comment}>{review.comment}</TableCell>
+                <TableCell className="max-w-xs truncate" title={review.comment}>
+                  {review.comment}
+                </TableCell>
                 <TableCell>
-                    <ReviewActions reviewId={review._id} />
+                  <ReviewActions reviewId={review._id} />
                 </TableCell>
               </TableRow>
             ))}
             {reviews.length === 0 && (
-                <TableRow>
-                    <TableCell colSpan={5} className="text-center h-24 text-muted-foreground">
-                        No pending reviews.
-                    </TableCell>
-                </TableRow>
-             )}
+              <TableRow>
+                <TableCell
+                  colSpan={5}
+                  className="text-center h-24 text-muted-foreground"
+                >
+                  No pending reviews.
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </div>

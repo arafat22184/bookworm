@@ -17,7 +17,6 @@ export function ImageUpload({
   onRemove,
   value
 }: ImageUploadProps) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onUpload = (result: any) => {
     if (result.info && result.info.secure_url) {
       onChange(result.info.secure_url);

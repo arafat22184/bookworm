@@ -10,7 +10,6 @@ import { DeleteTutorialDialog } from "@/components/admin/DeleteTutorialDialog";
 
 export default function AdminTutorialsPage() {
   // const router = useRouter();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [tutorials, setTutorials] = useState<any[]>([]);
   const [title, setTitle] = useState("");
   const [videoUrl, setVideoUrl] = useState("");

@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { ShelfItem, ReadingStats } from './types';
+import { ShelfItem, ReadingStats, Serialized } from './types';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -157,7 +157,7 @@ export function getReadingStats(shelves: ShelfItem[]): ReadingStats {
  * @param obj - The object to serialize
  * @returns Serialized object
  */
-export function serialize<T>(obj: T): T {
+export function serialize<T>(obj: T): Serialized<T> {
   return JSON.parse(JSON.stringify(obj));
 }
 

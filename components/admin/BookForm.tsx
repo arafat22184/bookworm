@@ -42,7 +42,6 @@ export function BookForm({
   submitLabel = "Create Book",
 }: BookFormProps) {
   const [loading, setLoading] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [genres, setGenres] = useState<any[]>([]);
 
   useEffect(() => {

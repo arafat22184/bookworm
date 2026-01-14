@@ -13,21 +13,21 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { SerializedBook, SerializedGenre } from "@/lib/types";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 import "@/lib/models/Genre";
 
-const serialize = (obj: any) => JSON.parse(JSON.stringify(obj));
+const serialize = <T,>(obj: T): T => JSON.parse(JSON.stringify(obj));
 
 export default async function AdminBooksPage() {
   await connectToDatabase();
 
-  let books = [];
+  let books: SerializedBook[] = [];
   try {
     const rawBooks = await Book.find()
       .populate("genres")
       .sort({ createdAt: -1 });
-    books = serialize(rawBooks);
+    books = serialize(rawBooks) as unknown as SerializedBook[];
   } catch (error) {
     console.error("Failed to fetch books:", error);
     // You might want to return an error UI here,
@@ -56,15 +56,13 @@ export default async function AdminBooksPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-            {books.map((book: any) => (
+            {books.map((book: SerializedBook) => (
               <TableRow key={book._id}>
                 <TableCell className="font-medium">{book.title}</TableCell>
                 <TableCell>{book.author}</TableCell>
                 <TableCell>
                   <div className="flex flex-wrap gap-1">
-                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                    {book.genres.map((g: any) => (
+                    {book.genres.map((g: SerializedGenre) => (
                       <Badge
                         key={g._id}
                         variant="secondary"

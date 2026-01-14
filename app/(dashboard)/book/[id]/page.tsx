@@ -9,19 +9,19 @@ import { Separator } from "@/components/ui/separator";
 import { Star } from "lucide-react";
 import { AddToShelf } from "@/components/shared/AddToShelf";
 import { ReviewForm } from "@/components/shared/ReviewForm";
+import { SerializedGenre, SerializedReview } from "@/lib/types";
 
 interface BookPageProps {
   params: Promise<{ id: string }>;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const serialize = (obj: any) => JSON.parse(JSON.stringify(obj));
+const serialize = <T extends unknown>(obj: T): T =>
+  JSON.parse(JSON.stringify(obj));
 
 export default async function BookPage({ params }: BookPageProps) {
   await connectToDatabase();
 
   // ensure models
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const _ = User;
 
   const { id } = await params;
@@ -43,8 +43,10 @@ export default async function BookPage({ params }: BookPageProps) {
 
   // Shelf status is now fetched client-side component
 
-  const reviews = serialize(rawReviews);
-  const serializedBook = serialize(book);
+  const reviews: SerializedReview[] = serialize(
+    rawReviews
+  ) as unknown as SerializedReview[];
+  const serializedBook = serialize(book) as any;
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
@@ -84,8 +86,7 @@ export default async function BookPage({ params }: BookPageProps) {
           </div>
 
           <div className="flex flex-wrap gap-2">
-            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-            {serializedBook.genres.map((genre: any) => (
+            {serializedBook.genres.map((genre: SerializedGenre) => (
               <Badge key={genre._id} variant="outline">
                 {genre.name}
               </Badge>
@@ -109,8 +110,7 @@ export default async function BookPage({ params }: BookPageProps) {
         <ReviewForm bookId={id} />
 
         <div className="space-y-6">
-          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-          {reviews.map((review: any) => {
+          {reviews.map((review: SerializedReview) => {
             const user = review.user || { name: "Deleted User", image: null };
             return (
               <div key={review._id} className="flex gap-4">
