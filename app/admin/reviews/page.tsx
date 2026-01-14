@@ -10,8 +10,7 @@ import {
 } from "@/components/ui/table";
 import { ReviewActions } from "@/components/admin/ReviewActions";
 
-const serialize = <T extends unknown>(obj: T): T =>
-  JSON.parse(JSON.stringify(obj));
+const serialize = <T,>(obj: T): T => JSON.parse(JSON.stringify(obj));
 
 export default async function AdminReviewsPage() {
   await connectToDatabase();
@@ -20,7 +19,19 @@ export default async function AdminReviewsPage() {
     .populate("book", "title")
     .sort({ createdAt: -1 });
 
-  const reviews: any[] = serialize(rawReviews);
+  const reviews: Array<{
+    _id: string;
+    book: { title: string };
+    user: { name: string };
+    rating: number;
+    comment: string;
+  }> = serialize(rawReviews) as unknown as Array<{
+    _id: string;
+    book: { title: string };
+    user: { name: string };
+    rating: number;
+    comment: string;
+  }>;
 
   return (
     <div className="space-y-6">
@@ -37,7 +48,7 @@ export default async function AdminReviewsPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {reviews.map((review: any) => (
+            {reviews.map((review) => (
               <TableRow key={review._id}>
                 <TableCell className="font-medium">
                   {review.book.title}

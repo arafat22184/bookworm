@@ -12,7 +12,7 @@ export async function GET() {
     await connectToDatabase();
 
     // Books per Genre
-    const books: SerializedBook[] = (await Book.find().populate('genres')) as any;
+    const books: SerializedBook[] = (await Book.find().populate('genres')) as unknown as SerializedBook[];
     const genreMap: Record<string, number> = {};
 
     books.forEach((b: SerializedBook) => {

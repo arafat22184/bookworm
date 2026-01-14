@@ -36,8 +36,8 @@ export function ReviewForm({ bookId }: { bookId: string }) {
             setRating(0);
             setComment('');
             router.refresh();
-    } catch (error: any) {
-            toast.error(error.message || "Failed to submit review");
+    } catch (error: unknown) {
+            toast.error(error instanceof Error ? error.message : "Failed to submit review");
         } finally {
             setLoading(false);
         }

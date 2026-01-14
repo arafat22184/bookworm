@@ -2,7 +2,6 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/session";
 import connectToDatabase from "@/lib/db";
 import Shelf from "@/lib/models/Shelf";
-import Book from "@/lib/models/Book";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookCard } from "@/components/shared/BookCard";
 import { serialize } from "@/lib/utils";
@@ -13,8 +12,6 @@ export default async function MyLibraryPage() {
   if (!user) redirect("/login");
 
   await connectToDatabase();
-
-  const _ = Book;
 
   const rawShelves = await Shelf.find({ user: user.id })
     .populate({

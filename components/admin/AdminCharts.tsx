@@ -16,7 +16,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
-export function AdminCharts({ data }: { data: any }) {
+export function AdminCharts({
+  data,
+}: {
+  data: {
+    genreData: Array<{ name: string; value: number }>;
+    userRoleData: Array<{ name: string; value: number }>;
+  };
+}) {
   if (!data) return null;
 
   return (

@@ -2,27 +2,22 @@ import { notFound } from "next/navigation";
 import connectToDatabase from "@/lib/db";
 import Book from "@/lib/models/Book";
 import Review from "@/lib/models/Review";
-import User from "@/lib/models/User";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Star } from "lucide-react";
 import { AddToShelf } from "@/components/shared/AddToShelf";
 import { ReviewForm } from "@/components/shared/ReviewForm";
-import { SerializedGenre, SerializedReview } from "@/lib/types";
+import { SerializedGenre, SerializedReview, SerializedBook } from "@/lib/types";
 
 interface BookPageProps {
   params: Promise<{ id: string }>;
 }
 
-const serialize = <T extends unknown>(obj: T): T =>
-  JSON.parse(JSON.stringify(obj));
+const serialize = <T,>(obj: T): T => JSON.parse(JSON.stringify(obj));
 
 export default async function BookPage({ params }: BookPageProps) {
   await connectToDatabase();
-
-  // ensure models
-  const _ = User;
 
   const { id } = await params;
 
@@ -46,7 +41,7 @@ export default async function BookPage({ params }: BookPageProps) {
   const reviews: SerializedReview[] = serialize(
     rawReviews
   ) as unknown as SerializedReview[];
-  const serializedBook = serialize(book) as any;
+  const serializedBook = serialize(book) as unknown as SerializedBook;
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">

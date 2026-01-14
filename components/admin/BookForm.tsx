@@ -42,7 +42,9 @@ export function BookForm({
   submitLabel = "Create Book",
 }: BookFormProps) {
   const [loading, setLoading] = useState(false);
-  const [genres, setGenres] = useState<any[]>([]);
+  const [genres, setGenres] = useState<Array<{ _id: string; name: string }>>(
+    []
+  );
 
   useEffect(() => {
     fetch("/api/genres")

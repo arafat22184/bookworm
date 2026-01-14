@@ -12,10 +12,10 @@ interface MongooseConn {
 }
 
 // Global scope to persist connection across hot reloads in development
-let cached: MongooseConn = (global as any).mongoose;
+let cached: MongooseConn = (global as unknown as { mongoose: MongooseConn }).mongoose;
 
 if (!cached) {
-  cached = (global as any).mongoose = { conn: null, promise: null };
+  cached = (global as unknown as { mongoose: MongooseConn }).mongoose = { conn: null, promise: null };
 }
 
 async function connectToDatabase() {
@@ -28,7 +28,7 @@ async function connectToDatabase() {
       bufferCommands: false,
     };
 
-    cached.promise = mongoose.connect(MONGODB_URI!, opts).then((mongoose: any) => {
+    cached.promise = mongoose.connect(MONGODB_URI!, opts).then((mongoose: typeof import('mongoose')) => {
       return mongoose;
     });
   }

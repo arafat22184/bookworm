@@ -7,7 +7,6 @@ import { ReadingChallenge } from "@/components/shared/ReadingChallenge";
 import { BookCard } from "@/components/shared/BookCard";
 import { generateRecommendations } from "@/lib/recommendation";
 import { serialize } from "@/lib/utils";
-import { RecommendationResult } from "@/lib/types";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen, Star, Sparkles } from "lucide-react";
@@ -147,18 +146,30 @@ export default async function UserDashboardPage() {
           </Card>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-            {recommendedBooks.map((rec: any) => (
-              <div key={rec.book._id} className="relative group">
-                <BookCard book={rec.book} />
-                {/* Recommendation reason tooltip */}
-                <div className="absolute inset-x-0 bottom-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-                  <div className="bg-popover text-popover-foreground p-3 rounded-lg shadow-lg text-xs border mx-2 mb-2">
-                    <p className="font-medium mb-1">Why this book?</p>
-                    <p className="text-muted-foreground">{rec.reason}</p>
+            {recommendedBooks.map(
+              (rec: {
+                book: {
+                  _id: string;
+                  title: string;
+                  author: string;
+                  coverImage: string;
+                  avgRating: number;
+                };
+                score: number;
+                reason: string;
+              }) => (
+                <div key={rec.book._id} className="relative group">
+                  <BookCard book={rec.book} />
+                  {/* Recommendation reason tooltip */}
+                  <div className="absolute inset-x-0 bottom-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                    <div className="bg-popover text-popover-foreground p-3 rounded-lg shadow-lg text-xs border mx-2 mb-2">
+                      <p className="font-medium mb-1">Why this book?</p>
+                      <p className="text-muted-foreground">{rec.reason}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              )
+            )}
           </div>
         )}
       </div>

@@ -31,7 +31,7 @@ export default async function AdminDashboardPage() {
 
   const books: SerializedBook[] = (await Book.find()
     .populate("genres")
-    .lean()) as any;
+    .lean()) as unknown as SerializedBook[];
   const genreStats: Record<string, number> = {};
   books.forEach((book: SerializedBook) => {
     if (book.genres && Array.isArray(book.genres)) {

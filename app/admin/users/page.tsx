@@ -13,7 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { RoleSelect } from "@/components/admin/RoleSelect";
 import { SerializedUser } from "@/lib/types";
 
-const serialize = <T extends unknown>(obj: T): T =>
+const serialize = <T,>(obj: T): T =>
   JSON.parse(JSON.stringify(obj));
 
 export default async function AdminUsersPage() {
