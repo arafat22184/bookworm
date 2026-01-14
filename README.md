@@ -1,10 +1,10 @@
 # 📚 BookWorm - Personalized Book Recommendation & Reading Tracker
 
+### 🚀 [**Live Demo**](https://bookworm-three-zeta.vercel.app/)
+
 ![Landing Page](https://res.cloudinary.com/ddckuxsjx/image/upload/v1768411897/LandingPage_jbfrw6.png)
 
 A modern, full-stack web application for discovering books, tracking reading progress, writing reviews, and receiving personalized recommendations.
-
-[**Live Demo**](https://bookworm-three-zeta.vercel.app/)
 
 ---
 
@@ -482,31 +482,6 @@ This project was created for Programming Hero evaluation. For any questions or i
 2. Check the complete documentation
 3. Test in development mode
 4. Submit issues or pull requests
-
----
-
-## 📄 License
-
-This project is created for educational purposes as part of the Programming Hero curriculum.
-
----
-
-## 👨‍💻 Developer
-
-**Project:** BookWorm  
-**Framework:** Next.js 16  
-**Evaluation:** Programming Hero  
-**Deadline:** 14 January 2026
-
----
-
-## 🙏 Acknowledgments
-
-- Next.js team for the amazing framework
-- shadcn/ui for beautiful components
-- Vercel for hosting platform
-- MongoDB Atlas for database
-- Cloudinary for image management
 
 ---
 
