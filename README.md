@@ -1,12 +1,22 @@
 # 📚 BookWorm - Personalized Book Recommendation & Reading Tracker
 
+![Landing Page](https://res.cloudinary.com/ddckuxsjx/image/upload/v1768411897/LandingPage_jbfrw6.png)
+
 A modern, full-stack web application for discovering books, tracking reading progress, writing reviews, and receiving personalized recommendations.
+
+[**Live Demo**](https://bookworm-three-zeta.vercel.app/)
 
 ---
 
 ## 🎯 Project Overview
 
-BookWorm is a comprehensive book management platform that combines social reading features with intelligent recommendations. Built with Next.js 15, MongoDB, and modern web technologies, it provides a seamless experience for book lovers to discover, track, and share their reading journey.
+BookWorm is a comprehensive book management platform that combines social reading features with intelligent recommendations. Built with Next.js 16, MongoDB, and modern web technologies, it provides a seamless experience for book lovers to discover, track, and share their reading journey.
+
+### Dashboards
+
+|                                              User Dashboard                                               |                                               Admin Dashboard                                               |
+| :-------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------: |
+| ![User Dashboard](https://res.cloudinary.com/ddckuxsjx/image/upload/v1768411900/UserDashboard_s0jlko.png) | ![Admin Dashboard](https://res.cloudinary.com/ddckuxsjx/image/upload/v1768411894/AdminDashboard_xxg2oo.png) |
 
 ### Key Features
 
@@ -32,46 +42,51 @@ BookWorm is a comprehensive book management platform that combines social readin
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd bookworm
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment variables**
-   
+
    Create a `.env.local` file in the root directory:
+
    ```env
    # Database
    MONGODB_URI=your_mongodb_connection_string
-   
+
    # JWT Secrets (generate secure random strings)
    JWT_ACCESS_SECRET=your_access_secret_here
    JWT_REFRESH_SECRET=your_refresh_secret_here
-   
+
    # Cloudinary Configuration
    NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name
    CLOUDINARY_API_KEY=your_api_key
    CLOUDINARY_API_SECRET=your_api_secret
    ```
-   
+
    **Important:** Create an upload preset named `bookworm_preset` in your Cloudinary dashboard:
+
    - Go to Settings → Upload → Upload presets
    - Create a new unsigned preset named `bookworm_preset`
    - Set folder to `bookworm` (optional)
    - Enable unsigned uploading
 
 4. **Run the development server**
+
    ```bash
    npm run dev
    ```
 
 5. **Open your browser**
-   
+
    Navigate to [http://localhost:3000](http://localhost:3000)
 
 ---
@@ -90,23 +105,28 @@ For evaluation purposes, you can create an admin account using the registration 
 ## 🛠️ Tech Stack
 
 ### Frontend
-- **Framework:** Next.js 15 (App Router)
+
+- **Framework:** Next.js 16.1 (App Router)
 - **Language:** TypeScript
-- **Styling:** Tailwind CSS
+- **Styling:** Tailwind CSS 4
 - **UI Components:** shadcn/ui
+- **Animations:** Framer Motion, Lenis (Smooth Scroll)
+- **Notifications:** Sonner
 - **Icons:** Lucide React
 - **Charts:** Recharts
 - **Forms:** React Hook Form + Zod
 
 ### Backend
-- **Runtime:** Next.js API Routes
+
+- **Framework:** Next.js API Routes
 - **Database:** MongoDB with Mongoose
 - **Authentication:** JWT (Access + Refresh Tokens)
 - **Password Hashing:** bcryptjs
 - **Image Upload:** Cloudinary
 
 ### Development
-- **Package Manager:** npm
+
+- **Package Manager:** npm / pnpm
 - **Linting:** ESLint
 - **Type Checking:** TypeScript
 
@@ -114,9 +134,12 @@ For evaluation purposes, you can create an admin account using the registration 
 
 ## 📁 Project Structure
 
-```
+```bash
 bookworm/
 ├── app/                          # Next.js App Router
+│   ├── (auth)/                  # Authentication routes
+│   │   ├── login/
+│   │   └── register/
 │   ├── (dashboard)/             # Protected dashboard routes
 │   │   ├── dashboard/           # User dashboard
 │   │   ├── browse/              # Browse books
@@ -127,25 +150,28 @@ bookworm/
 │   │   ├── books/               # Book management
 │   │   ├── users/               # User management
 │   │   └── reviews/             # Review moderation
-│   ├── api/                     # API routes
-│   │   ├── auth/                # Authentication
-│   │   ├── books/               # Book CRUD
-│   │   ├── reviews/             # Review management
-│   │   └── stats/               # Statistics
-│   ├── login/                   # Login page
-│   └── register/                # Registration page
+│   └── api/                     # API routes
+│       ├── auth/                # Authentication endpoints
+│       ├── books/               # Book CRUD
+│       ├── reviews/             # Review management
+│       └── stats/               # Statistics
 ├── components/                   # React components
-│   ├── shared/                  # Reusable components
 │   ├── admin/                   # Admin-specific components
+│   ├── auth/                    # Authentication forms
+│   ├── landing/                 # Landing page sections
+│   ├── profile/                 # Profile management
+│   ├── shared/                  # Reusable components
 │   └── ui/                      # shadcn/ui components
+├── hooks/                       # Custom hooks
 ├── lib/                         # Utilities and configurations
+│   ├── actions/                 # Server actions
 │   ├── models/                  # Mongoose models
-│   ├── types.ts                 # TypeScript types
+│   ├── validations/             # Zod schemas
 │   ├── auth.ts                  # Authentication utilities
-│   ├── recommendation.ts        # Recommendation engine
-│   ├── api-utils.ts             # API helpers
-│   └── utils.ts                 # General utilities
-└── middleware.ts                # Next.js middleware
+│   ├── db.ts                    # Database connection
+│   └── recommendation.ts        # Recommendation engine
+├── public/                      # Static assets
+└── ...config files
 ```
 
 ---
@@ -155,12 +181,14 @@ bookworm/
 ### 1. Personalized Recommendations
 
 The recommendation engine analyzes:
+
 - User's reading history
 - Genre preferences
 - Book ratings
 - Community ratings
 
 **Algorithm:**
+
 1. Calculate weighted genre preferences
 2. Find books in top 3 preferred genres
 3. Score by genre match + rating + popularity
@@ -169,6 +197,7 @@ The recommendation engine analyzes:
 ### 2. Advanced Filtering
 
 **Browse Page:**
+
 - Search by title or author (full-text indexed)
 - Filter by multiple genres
 - Filter by rating range (1-5 stars)
@@ -204,11 +233,13 @@ The recommendation engine analyzes:
 ### Authentication Flow
 
 1. **Registration:**
+
    - User provides name, email, password, and profile photo
    - Password is hashed with bcrypt
    - JWT tokens are generated and stored in HTTP-only cookies
 
 2. **Login:**
+
    - User provides email and password
    - Credentials are verified
    - Access token (15min) and refresh token (7 days) are issued
@@ -229,12 +260,14 @@ The recommendation engine analyzes:
 ## 📊 Database Models
 
 ### User
+
 - name, email, password (hashed)
 - role (user/admin)
 - image (Cloudinary URL)
 - challenge (yearly reading goal)
 
 ### Book
+
 - title, author, description
 - coverImage (Cloudinary URL)
 - genres (references Genre)
@@ -242,20 +275,24 @@ The recommendation engine analyzes:
 - totalPages, publishedYear, isbn
 
 ### Genre
+
 - name, slug, description
 - timestamps
 
 ### Review
+
 - user, book (references)
 - rating (1-5), comment
 - status (pending/approved/rejected)
 
 ### Shelf
+
 - user, book (references)
 - status (want-to-read/currently-reading/read)
 - progress (pages read)
 
 ### Tutorial
+
 - title, videoUrl, description
 
 ---
@@ -265,6 +302,7 @@ The recommendation engine analyzes:
 ### Vercel Deployment (Recommended)
 
 1. **Push to GitHub**
+
    ```bash
    git add .
    git commit -m "Ready for deployment"
@@ -272,14 +310,16 @@ The recommendation engine analyzes:
    ```
 
 2. **Deploy to Vercel**
+
    - Go to [vercel.com](https://vercel.com)
    - Import your GitHub repository
    - Configure environment variables
    - Deploy
 
 3. **Environment Variables**
-   
+
    Add these in Vercel dashboard:
+
    - `MONGODB_URI`
    - `JWT_ACCESS_SECRET`
    - `JWT_REFRESH_SECRET`
@@ -312,6 +352,7 @@ The recommendation engine analyzes:
 ### Manual Testing
 
 1. **Authentication:**
+
    ```bash
    # Test registration
    # Test login
@@ -320,6 +361,7 @@ The recommendation engine analyzes:
    ```
 
 2. **User Features:**
+
    ```bash
    # Browse books
    # Filter and sort
@@ -350,40 +392,49 @@ npm run start
 ### Authentication
 
 **POST** `/api/auth/register`
+
 - Body: `{ name, email, password, image }`
 - Returns: User object + tokens in cookies
 
 **POST** `/api/auth/login`
+
 - Body: `{ email, password }`
 - Returns: User object + tokens in cookies
 
 **POST** `/api/auth/logout`
+
 - Clears authentication cookies
 
 **POST** `/api/auth/refresh`
+
 - Uses refresh token to get new access token
 
 ### Books
 
 **GET** `/api/books`
+
 - Query: `q, genre, minRating, maxRating, sortBy, sortOrder, page, limit`
 - Returns: Paginated books with filters
 
 **POST** `/api/books` (Admin only)
+
 - Body: Book data
 - Returns: Created book
 
 ### Reviews
 
 **GET** `/api/reviews`
+
 - Query: `bookId, status`
 - Returns: Reviews for a book
 
 **POST** `/api/reviews`
+
 - Body: `{ bookId, rating, comment }`
 - Returns: Created review (pending status)
 
 **PATCH** `/api/reviews/[id]` (Admin only)
+
 - Body: `{ status: 'approved' | 'rejected' }`
 - Returns: Updated review
 
@@ -394,24 +445,28 @@ npm run start
 This project has been enhanced with:
 
 ✅ **Code Quality**
+
 - Professional variable naming
 - Full TypeScript type safety
 - Comprehensive JSDoc documentation
 - No AI-generated patterns
 
 ✅ **Advanced Features**
+
 - Personalized recommendation engine
 - Advanced filtering and sorting
 - Loading states and error boundaries
 - Next.js Image optimization
 
 ✅ **Performance**
+
 - Database indexes for fast queries
 - Image optimization with Next.js
 - Efficient recommendation algorithm
 - Optimized API responses
 
 ✅ **User Experience**
+
 - Skeleton loaders
 - Error boundaries with retry
 - Responsive design
@@ -439,7 +494,7 @@ This project is created for educational purposes as part of the Programming Hero
 ## 👨‍💻 Developer
 
 **Project:** BookWorm  
-**Framework:** Next.js 15  
+**Framework:** Next.js 16  
 **Evaluation:** Programming Hero  
 **Deadline:** 14 January 2026
 
@@ -456,4 +511,3 @@ This project is created for educational purposes as part of the Programming Hero
 ---
 
 **Built with ❤️ for book lovers everywhere** 📚
-
