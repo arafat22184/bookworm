@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
       return errorResponse('Validation Error', 400);
     }
 
-    const { name, email, password } = result.data;
+    const { name, email, password, image } = result.data;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -30,7 +30,8 @@ export async function POST(req: NextRequest) {
       name,
       email,
       password: hashedPassword,
-      role: 'user', // Default role
+      image,
+      role: 'user',
     });
 
     // Generate tokens
