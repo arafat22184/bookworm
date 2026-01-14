@@ -17,15 +17,6 @@ interface BookPageProps {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const serialize = (obj: any) => JSON.parse(JSON.stringify(obj));
 
-export const dynamic = "force-static";
-export const dynamicParams = true;
-
-export async function generateStaticParams() {
-  await connectToDatabase();
-  const books = await Book.find().select("_id").lean();
-  return books.map((book) => ({ id: book._id.toString() }));
-}
-
 export default async function BookPage({ params }: BookPageProps) {
   await connectToDatabase();
 

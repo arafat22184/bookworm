@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { updateProfileSchema } from '@/lib/validations/profile';
-import { z } from 'zod';
-import { toast } from 'sonner';
-import { Button } from '@/components/ui/button';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { updateProfileSchema } from "@/lib/validations/profile";
+import { z } from "zod";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -14,12 +14,12 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { CldUploadWidget } from 'next-cloudinary';
-import Image from 'next/image';
-import { Upload, User, Loader2 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { CldUploadWidget } from "next-cloudinary";
+import Image from "next/image";
+import { Upload, User, Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 type UpdateProfileFormValues = z.infer<typeof updateProfileSchema>;
 
@@ -34,13 +34,13 @@ interface ProfileFormProps {
 export function ProfileForm({ user }: ProfileFormProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [uploadedImage, setUploadedImage] = useState<string>(user.image || '');
+  const [uploadedImage, setUploadedImage] = useState<string>(user.image || "");
 
   const form = useForm<UpdateProfileFormValues>({
     resolver: zodResolver(updateProfileSchema),
     defaultValues: {
       name: user.name,
-      image: user.image || '',
+      image: user.image || "",
     },
   });
 
@@ -48,26 +48,24 @@ export function ProfileForm({ user }: ProfileFormProps) {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/user/profile', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
+      // Create FormData for server action
+      const formData = new FormData();
+      if (data.name) formData.append("name", data.name);
+      if (data.image) formData.append("image", data.image);
 
-      const result = await response.json();
+      // Call server action
+      const { updateProfile } = await import("@/lib/actions/profile");
+      const result = await updateProfile(formData);
 
-      if (!response.ok) {
-        if (result.errors) {
-          const firstError = Object.values(result.errors).flat()[0] as string;
-          throw new Error(firstError || result.message);
-        }
-        throw new Error(result.message || 'Failed to update profile');
+      if (!result.success) {
+        throw new Error(result.message);
       }
 
-      toast.success('Profile updated successfully!');
+      toast.success(result.message);
       router.refresh();
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to update profile';
+      const errorMessage =
+        error instanceof Error ? error.message : "Failed to update profile";
       toast.error(errorMessage);
     } finally {
       setIsLoading(false);
@@ -90,7 +88,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
                   <div className="w-24 h-24 rounded-full border-2 border-dashed border-muted-foreground/25 flex items-center justify-center overflow-hidden bg-muted">
                     {uploadedImage || field.value ? (
                       <Image
-                        src={uploadedImage || field.value || ''}
+                        src={uploadedImage || field.value || ""}
                         alt="Profile"
                         width={96}
                         height={96}
@@ -103,9 +101,15 @@ export function ProfileForm({ user }: ProfileFormProps) {
 
                   {/* Upload Button */}
                   <CldUploadWidget
-                    uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || 'bookworm'}
+                    uploadPreset={
+                      process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET ||
+                      "bookworm"
+                    }
                     onSuccess={(result) => {
-                      if (typeof result.info === 'object' && 'secure_url' in result.info) {
+                      if (
+                        typeof result.info === "object" &&
+                        "secure_url" in result.info
+                      ) {
                         const url = result.info.secure_url;
                         setUploadedImage(url);
                         field.onChange(url);
@@ -150,7 +154,9 @@ export function ProfileForm({ user }: ProfileFormProps) {
         <div className="space-y-2">
           <FormLabel>Email</FormLabel>
           <Input value={user.email} disabled className="bg-muted" />
-          <p className="text-xs text-muted-foreground">Email cannot be changed</p>
+          <p className="text-xs text-muted-foreground">
+            Email cannot be changed
+          </p>
         </div>
 
         {/* Submit Button */}
