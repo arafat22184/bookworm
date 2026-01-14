@@ -92,6 +92,16 @@ export interface ShelfItem {
   updatedAt: Date;
 }
 
+export interface PopulatedShelfItem {
+  _id: string;
+  user: string;
+  book: BookWithGenres;
+  status: ShelfStatus;
+  progress: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 // Review Types
 export type ReviewStatus = 'pending' | 'approved' | 'rejected';
 
@@ -104,6 +114,42 @@ export interface ReviewData {
   status: ReviewStatus;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface PopulatedReview {
+  _id: string;
+  user: {
+    _id: string;
+    name: string;
+    image?: string;
+  };
+  book: string | BookWithGenres;
+  rating: number;
+  comment: string;
+  status: ReviewStatus;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Tutorial Types
+export interface Tutorial {
+  _id: string;
+  title: string;
+  description: string;
+  videoUrl: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// User Admin Types
+export interface AdminUserData {
+  _id: string;
+  name: string;
+  email: string;
+  role: 'user' | 'admin';
+  image?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 // Recommendation Types
@@ -145,6 +191,10 @@ export interface UserStats {
 
 export interface AdminStats {
   genreData: GenreDistribution[];
+  userRoleData: {
+    name: string;
+    value: number;
+  }[];
 }
 
 export interface ReadingStats {
@@ -154,6 +204,16 @@ export interface ReadingStats {
   favoriteGenres: string[];
   readingStreak: number;
   booksThisYear: number;
+}
+
+export interface ChartData {
+  name: string;
+  value: number;
+}
+
+export interface ChartLabelProps {
+  name: string;
+  percent?: number;
 }
 
 // Filter & Search Types
@@ -237,3 +297,19 @@ export interface Activity {
   rating?: number;
   createdAt: Date;
 }
+
+// Serialized Data Types (for JSON.parse(JSON.stringify()) results)
+export type Serialized<T> = T extends Date
+  ? string
+  : T extends Types.ObjectId
+  ? string
+  : T extends object
+  ? { [K in keyof T]: Serialized<T[K]> }
+  : T;
+
+export type SerializedBook = Serialized<BookWithGenres>;
+export type SerializedGenre = Serialized<PopulatedGenre>;
+export type SerializedShelf = Serialized<PopulatedShelfItem>;
+export type SerializedReview = Serialized<PopulatedReview>;
+export type SerializedTutorial = Serialized<Tutorial>;
+export type SerializedUser = Serialized<AdminUserData>;

@@ -6,8 +6,17 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Sidebar } from "./Sidebar";
 import { useState } from "react";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function Navbar({ user }: { user: any }) {
+export function Navbar({
+  user,
+}: {
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    role: string;
+    image?: string;
+  };
+}) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (

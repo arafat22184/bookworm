@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   PieChart,
@@ -9,17 +9,15 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  ResponsiveContainer
-} from 'recharts';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+  ResponsiveContainer,
+} from "recharts";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8"];
 
 interface UserData {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  genreData?: any[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  monthlyData?: any[];
+  genreData?: Array<{ name: string; value: number }>;
+  monthlyData?: Array<{ name: string; books: number }>;
 }
 
 export function UserCharts({ data }: { data: UserData }) {
@@ -38,7 +36,6 @@ export function UserCharts({ data }: { data: UserData }) {
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
-
                   data={genreData}
                   cx="50%"
                   cy="50%"
@@ -46,10 +43,15 @@ export function UserCharts({ data }: { data: UserData }) {
                   fill="#8884d8"
                   dataKey="value"
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  label={({ name, percent }: any) => `${name} ${((percent || 0) * 100).toFixed(0)}%`}
+                  label={({ name, percent }: any) =>
+                    `${name} ${((percent || 0) * 100).toFixed(0)}%`
+                  }
                 >
                   {genreData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
                   ))}
                 </Pie>
                 <Tooltip />
@@ -58,7 +60,7 @@ export function UserCharts({ data }: { data: UserData }) {
           </div>
         </CardContent>
       </Card>
-      
+
       <Card>
         <CardHeader>
           <CardTitle>Monthly Activity</CardTitle>
@@ -67,8 +69,18 @@ export function UserCharts({ data }: { data: UserData }) {
           <div className="h-[300px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={monthlyData}>
-                <XAxis dataKey="name" fontSize={12} tickLine={false} axisLine={false} />
-                <YAxis fontSize={12} tickLine={false} axisLine={false} allowDecimals={false} />
+                <XAxis
+                  dataKey="name"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <YAxis
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                  allowDecimals={false}
+                />
                 <Tooltip />
                 <Bar dataKey="books" fill="#adfa1d" radius={[4, 4, 0, 0]} />
               </BarChart>

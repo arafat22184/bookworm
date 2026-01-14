@@ -15,14 +15,18 @@ import {
 import { Edit } from "lucide-react";
 import { BookForm, BookFormValues } from "./BookForm";
 
-interface Book extends BookFormValues {
-  _id: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  match?: any; // To handle any potential type mismatch from parent
-}
-
 interface EditBookDialogProps {
-  book: Book;
+  book: {
+    _id: string;
+    title: string;
+    author: string;
+    description: string;
+    coverImage: string;
+    genres: Array<string | { _id: string; name: string }>;
+    totalPages?: number;
+    publishedYear?: number;
+    isbn?: string;
+  };
 }
 
 export function EditBookDialog({ book }: EditBookDialogProps) {
@@ -32,8 +36,9 @@ export function EditBookDialog({ book }: EditBookDialogProps) {
   // Transform book genres from objects to array of IDs if necessary
   const initialData: BookFormValues = {
     ...book,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    genres: book.genres.map((g: any) => (typeof g === "string" ? g : g._id)),
+    genres: book.genres.map((g: string | { _id: string }) =>
+      typeof g === "string" ? g : g._id
+    ),
   };
 
   const onSubmit = async (data: BookFormValues) => {

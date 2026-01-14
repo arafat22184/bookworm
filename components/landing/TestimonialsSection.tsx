@@ -4,6 +4,11 @@ import connectToDatabase from "@/lib/db";
 import Review from "@/lib/models/Review";
 import User from "@/lib/models/User";
 
+interface PopulatedReview {
+  comment: string;
+  user?: { name?: string; _id?: unknown; image?: string } | string;
+}
+
 function TestimonialCard({
   quote,
   author,
@@ -49,9 +54,8 @@ function TestimonialCard({
 async function getTestimonials() {
   try {
     await connectToDatabase();
-    // Ensure User model is registered before population
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const _ = User;
+    // Remove unused variable
+    void User;
 
     const reviews = await Review.find({ rating: 5 })
       .sort({ createdAt: -1 })
@@ -61,17 +65,19 @@ async function getTestimonials() {
 
     if (!reviews) return [];
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return reviews.map((review: any) => ({
+    return reviews.map((review: PopulatedReview) => ({
       quote: review.comment,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      author: (review.user as any)?.name || "Anonymous Reader",
+      author:
+        typeof review.user === "object" && review.user?.name
+          ? review.user.name
+          : "Anonymous Reader",
       role: "Verified Reader",
       imageId:
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (review.user as any)?._id?.toString() || Math.random().toString(),
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      userImage: (review.user as any)?.image,
+        typeof review.user === "object" && review.user?._id
+          ? String(review.user._id)
+          : Math.random().toString(),
+      userImage:
+        typeof review.user === "object" ? review.user?.image : undefined,
     }));
   } catch (error) {
     console.error("Failed to fetch testimonials:", error);

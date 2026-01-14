@@ -9,11 +9,11 @@ import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen, Users, MessageSquare, Video } from "lucide-react";
 import { AdminCharts } from "@/components/admin/AdminCharts";
+import { SerializedBook, SerializedGenre } from "@/lib/types";
 
 export default async function AdminDashboardPage() {
   await connectToDatabase();
 
-  // Ensure Genre model is registered before populating
   void Genre;
 
   const booksCount = await Book.countDocuments();
@@ -29,12 +29,13 @@ export default async function AdminDashboardPage() {
     { name: "User", value: regularUserCount },
   ];
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  const books = await Book.find().populate("genres").lean();
+  const books: SerializedBook[] = (await Book.find()
+    .populate("genres")
+    .lean()) as unknown as SerializedBook[];
   const genreStats: Record<string, number> = {};
-  books.forEach((book: any) => {
+  books.forEach((book: SerializedBook) => {
     if (book.genres && Array.isArray(book.genres)) {
-      book.genres.forEach((genre: any) => {
+      book.genres.forEach((genre: SerializedGenre) => {
         if (genre?.name) {
           genreStats[genre.name] = (genreStats[genre.name] || 0) + 1;
         }
@@ -45,7 +46,6 @@ export default async function AdminDashboardPage() {
     name,
     value,
   }));
-  /* eslint-enable @typescript-eslint/no-explicit-any */
 
   return (
     <div className="space-y-6">

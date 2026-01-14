@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { changePasswordSchema } from '@/lib/validations/profile';
-import { z } from 'zod';
-import { toast } from 'sonner';
-import { Button } from '@/components/ui/button';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { changePasswordSchema } from "@/lib/validations/profile";
+import { z } from "zod";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -14,9 +14,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Eye, EyeOff, Loader2 } from 'lucide-react';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 
 type ChangePasswordFormValues = z.infer<typeof changePasswordSchema>;
 
@@ -29,9 +29,9 @@ export function PasswordChangeForm() {
   const form = useForm<ChangePasswordFormValues>({
     resolver: zodResolver(changePasswordSchema),
     defaultValues: {
-      currentPassword: '',
-      newPassword: '',
-      confirmPassword: '',
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
     },
   });
 
@@ -39,26 +39,25 @@ export function PasswordChangeForm() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/user/password', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
+      // Create FormData for server action
+      const formData = new FormData();
+      formData.append("currentPassword", data.currentPassword);
+      formData.append("newPassword", data.newPassword);
+      formData.append("confirmPassword", data.confirmPassword);
 
-      const result = await response.json();
+      // Call server action
+      const { updatePassword } = await import("@/lib/actions/profile");
+      const result = await updatePassword(formData);
 
-      if (!response.ok) {
-        if (result.errors) {
-          const firstError = Object.values(result.errors).flat()[0] as string;
-          throw new Error(firstError || result.message);
-        }
-        throw new Error(result.message || 'Failed to change password');
+      if (!result.success) {
+        throw new Error(result.message);
       }
 
-      toast.success('Password changed successfully!');
+      toast.success(result.message);
       form.reset();
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to change password';
+      const errorMessage =
+        error instanceof Error ? error.message : "Failed to change password";
       toast.error(errorMessage);
     } finally {
       setIsLoading(false);
@@ -78,7 +77,7 @@ export function PasswordChangeForm() {
               <FormControl>
                 <div className="relative">
                   <Input
-                    type={showCurrentPassword ? 'text' : 'password'}
+                    type={showCurrentPassword ? "text" : "password"}
                     placeholder="Enter current password"
                     {...field}
                     disabled={isLoading}
@@ -115,7 +114,7 @@ export function PasswordChangeForm() {
               <FormControl>
                 <div className="relative">
                   <Input
-                    type={showNewPassword ? 'text' : 'password'}
+                    type={showNewPassword ? "text" : "password"}
                     placeholder="Enter new password"
                     {...field}
                     disabled={isLoading}
@@ -152,7 +151,7 @@ export function PasswordChangeForm() {
               <FormControl>
                 <div className="relative">
                   <Input
-                    type={showConfirmPassword ? 'text' : 'password'}
+                    type={showConfirmPassword ? "text" : "password"}
                     placeholder="Confirm new password"
                     {...field}
                     disabled={isLoading}
